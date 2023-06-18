@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Under Construction";
+    ViewData["PageHeader"] = ViewData["PageName"];
+}
+@section scripts
+    {
+    <script>
+        $(document).ready(function () {
+            $("#dashboard").attr("class", "nav-item menu-open");
+            $("#dashboard-link").attr("class", "nav-link active");
+            $("#financial-dashboard").attr("class", "nav-link active");
+        })
+    </script>
+}
+<blockquote class="quote-orange">
+    <h5 id="reminder-1"><i class="fa-solid fa-trowel-bricks"></i> &nbsp;@ViewData["PageName"] Is Under Construction!</h5>
+    <p>Soon you'll be able to acess this area, for now check it out our <a href="@Url.Action("PatrimonyDashboard", "Dashboard")">Patrimony Dashboard!</a></p>
+</blockquote>

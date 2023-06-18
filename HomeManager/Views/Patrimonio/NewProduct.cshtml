@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewData["PageHeader"] = "New Product";
+    ViewData["Title"] = "Patrimony > " + ViewData["PageHeader"];
+}
+@section scripts
+    {
+    <script src="~/plugins/inputmask/jquery.inputmask.min.js"></script>
+
+    <script>
+        $(function () {
+
+            $('[data-mask]').inputmask()
+
+            let im = new Inputmask({
+                alias: 'currency',
+                prefix: 'R$ ',
+                radixPoint: ',',
+                groupSeparator: '.',
+                numericInput: true,
+                onBeforeMask: function (value, opts) {
+
+                },
+            })
+
+
+            let moneyField = document.getElementById('money');
+            im.mask(moneyField)
+
+            let moneyHackyField = document.getElementById('money_hacky');
+            let value = moneyHackyField.value
+            im.mask(moneyHackyField)
+            moneyHackyField.value = Number(value)
+
+        })
+
+    </script>
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 flex-column center">
+        <div class="card card-default">
+
+            <div class="card-header">
+              <h3 class="card-title"><i class="fa-solid fa-square-plus"></i> Novo Produto</h3>
+            </div>
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Name</span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="ex: monitor 27'">
+                        </div>
+                    </div> <!--Nome -->
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Model</span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="ex:F390 Series ">
+                        </div>
+                    </div> <!--Model-->
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">R$</span>
+                            </div>
+                            <input type="text" class="form-control" id="money" name="money">
+                        </div>
+                    </div> <!--Price -->
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-barcode"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="SerialNumber">
+                        </div>
+                    </div> <!--Serial Number -->
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Marca</span>
+                            </div>
+                            <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                                <option selected>Choose...</option>
+                                <option value="1">Eletrônicos</option>
+                                <option value="2">Móveis</option>
+                                <option value="3">Colecionáveis</option>
+                                <option value="4">Eletrodoméstico</option>
+
+                            </select>
+                        </div>
+                    </div> <!--Brand -->
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Category</span>
+                            </div>
+                            <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                                <option selected>Choose...</option>
+                                <option value="1">Eletrônicos</option>
+                                <option value="2">Móveis</option>
+                                <option value="3">Colecionáveis</option>
+                                <option value="4">Eletrodoméstico</option>
+
+                            </select>
+                        </div>
+                    </div> <!--Category-->
+                </div>
+            </div>
+            <div class="card-footer ">
+                <div class="row float-right">
+                    
+                <button type="button" class="btn btn-danger mr-2"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" class="btn btn-success"><i class="fa-solid fa-check"></i> Save</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

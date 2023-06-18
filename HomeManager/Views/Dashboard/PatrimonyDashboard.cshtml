@@ -1,0 +1,415 @@
+﻿@{
+    ViewData["Title"] = "Patrimônio";
+    ViewData["PageHeader"] = "Dashboard Patrimônio";
+}
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#dashboard").attr("class", "nav-item menu-open");
+            $("#dashboard-link").attr("class", "nav-link active");
+            $("#patrimony-dashboard").attr("class", "nav-link active");
+        })
+    </script>
+
+
+    <script src="~/plugins/chart.js/Chart.min.js"></script>
+    <script>
+        $(function () {
+            var graphic_1 = $('#contagem-categoria').get(0).getContext('2d')
+            var graphic_1_data = {
+                labels: [
+                    'Eletrônicos',
+                    'Móveis',
+                    'Eetrodomésticos',
+                    'Colecionáveis'
+                ],
+                datasets: [
+                    {
+                        data: [50, 5, 5, 15],
+                        backgroundColor: [
+                            '#f56954',
+                            '#00a65a',
+                            '#f39c12',
+                            '#00c0ef',
+
+                        ]
+                    }
+                ]
+            }
+            var donutOptions = { maintainAspectRatio: false, responsive: true, }
+            new Chart(graphic_1, {
+                type: 'doughnut',
+                data: graphic_1_data,
+                options: donutOptions
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            'use strict'
+
+            var ticksStyle = {
+                fontColor: '#495057',
+                fontStyle: 'bold'
+            }
+
+            var mode = 'index'
+            var intersect = true
+
+            var $salesChart = $('#sales-chart')
+            var salesChart = new Chart($salesChart, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        'Eletrônicos',
+                        'Móveis',
+                        'Eetrodomésticos',
+                        'Colecionáveis',
+                        'Acessórios'
+                    ],
+                    datasets: [
+                        {
+                            data: [15207, 4270, 6470, 15000,900],
+                            backgroundColor: [
+                                '#f56954',
+                                '#00a65a',
+                                '#f39c12',
+                                '#00c0ef',
+                                '#e7a612',
+                            ],
+                            borderColor: '#007bff',
+
+                        }
+                        
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        mode: mode,
+                        intersect: intersect
+                    },
+                    hover: {
+                        mode: mode,
+                        intersect: intersect
+                    },
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        yAxes: [{
+                            // display: false,
+
+                            gridLines: {
+                                display: true,
+                                lineWidth: '4px',
+                                color: 'rgba(0, 0, 0, .2)',
+                                zeroLineColor: 'transparent'
+                            },
+                            ticks: $.extend({
+                                beginAtZero: true,
+
+                                // Include a dollar sign in the ticks
+                                callback: function (value) {
+                                    if (value >= 1000) {
+                                        value /= 1000
+                                        value += 'k'
+                                    }
+
+                                    return '$' + value
+                                }
+                            }, ticksStyle)
+                        }],
+                        xAxes: [{
+                            barPercentage: 0.2,
+                            display: true,
+                            gridLines: {
+                                display: true
+                            },
+                            ticks: ticksStyle
+                        }]
+                    }
+                }
+            })
+
+
+        })
+    </script>
+}
+
+
+<div class="content">
+    <div class="container-fluid">
+
+        <!-- #### GRAFICOS  #####-->
+        <div class="row">
+            <div class="col">
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">Overview</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                             <!-- Contagem por Categoria -->
+                            <div class="col-sm-6">
+                                <p class="d-flex flex-column">
+                                    <span>Contagem por Categoria</span>
+                                    <span class="text-bold text-lg"> Total 85 Ítens</span>
+                                </p>
+                                <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                                <canvas id="contagem-categoria" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 377px;" width="377" height="250" class="chartjs-render-monitor"></canvas>
+                            </div>
+                             <!-- Preços por Categoria -->
+                            <div class="col-sm-6">
+                                <div class="d-flex">
+                                    <p class="d-flex flex-column">
+                                        <span>Preços por Categoria</span>
+                                        <span class="text-bold text-lg"> Total R$ 40.947</span>
+                                    </p>
+                                    <!-- Anotações que podem ser úteis futuramente
+                                    <p class="ml-auto d-flex flex-column text-right">
+                                        <span class="text-success">
+                                            <i class="fas fa-arrow-up"></i> 33.1%
+                                        </span>
+                                        <span class="text-muted">Since last month</span>
+                                    </p>-->
+                                </div>
+
+                                <div class="position-relative mb-4">
+                                    <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                                    <canvas id="sales-chart" height="200" style="display: block; width: 452px; height: 200px;" width="452" class="chartjs-render-monitor"></canvas>
+                                </div>
+                                <!-- Botões que podem ser úteis futuramente
+                                <div class="d-flex flex-row justify-content-end">
+                                    <span class="mr-2">
+                                       <button type="button" class="btn btn-block btn-success btn-xs">Success</button>
+                                    </span>
+                                    <span>
+                                        <button type="button" class="btn btn-block btn-success btn-xs">Success</button>
+                                    </span>
+                                </div>-->
+
+                            </div>
+                        </div>
+                    </div>  
+                    <!-- Resultados -->
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-sm-2 col-6">
+                                <div class="description-block border-right">
+                                    <span class="description-percentage text-success"><i class="fas fa-percentage fa-sm"></i> 37%</span>
+                                    <h5 class="description-header">R$ 15.207,00</h5>
+                                    <span class="description-text text-bold text-lg text-muted">Eletrônico</span>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-2 col-6">
+                                <div class="description-block border-right">
+                                    <span class="description-percentage text-success"><i class="fas fa-percentage fa-sm"></i> 10%</span>
+                                    <h5 class="description-header">R$ 4.270,00</h5>
+                                    <span class="description-text text-bold text-lg text-muted">Móveis</span>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-2 col-6">
+                                <div class="description-block border-right">
+                                    <span class="description-percentage text-warning"><i class="fas fa-percentage fa-sm"></i> 16%</span>
+                                    <h5 class="description-header">R$ 6.470,00</h5>
+                                    <span class="description-text text-bold text-lg text-muted">Eletrodoméstico</span>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-2 col-6">
+                                <div class="description-block border-right">
+                                    <span class="description-percentage text-success"><i class="fas fa-percentage fa-sm"></i> 36%</span>
+                                    <h5 class="description-header">R$ 15.000,00</h5>
+                                    <span class="description-text text-bold text-lg text-muted">Colecionáveis</span>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-2 col-6">
+                                <div class="description-block">
+                                    <span class="description-percentage text-success"><i class="fas fa-percentage fa-sm"></i> 100%</span>
+                                    <h5 class="description-header">R$ 40.947,00</h5>
+                                    <span class="description-text text-bold text-lg text-muted">TOTAL</span>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-2 col-6">
+                                <div class="description-block">
+                                    <div class="description-header mt-4"><button id="submit" class="btn btn-success" onclick="location.href='@Url.Action("NewProduct", "Patrimonio")'"> <i class="fas fa-plus"></i> Novo Produto</button></div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            
+       
+            
+        </div>
+        <!-- /.row -->
+        <!-- #### END GRAFICOS  #####-->
+
+        <div class="row">
+
+            <!--Lado Esquerdo-->
+            <div class="col-lg-6">
+
+            <!--Item 1 - ITENS -->
+                <div class="card">
+                    <div class="card-header border-0">
+                        <h3 class="card-title">Top 5 ítens</h3>
+                        <!--<div class="card-tools">
+                            <a href="#" class="btn btn-tool btn-sm">
+                                <i class="fas fa-download"></i>
+                            </a>
+                            <a href="#" class="btn btn-tool btn-sm">
+                                <i class="fas fa-bars"></i>
+                            </a>
+                                </div>-->
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-striped table-valign-middle">
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Categoria</th>
+                                    <th>Preço</th>
+                                    <th>More</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Monitor 27' Curvo</td>
+                                    <td>Eletrônico</td>
+                                    <td>900,00</td>
+                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>Monitor 27' Curvo</td>
+                                    <td>Eletrônico</td>
+                                    <td>900,00</td>
+                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Monitor 27' Curvo</td>
+                                    <td>Eletrônico</td>
+                                    <td>900,00</td>
+                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Alexa Echo Dot 3</td>
+                                    <td>Eletrônico</td>
+                                    <td>210,00</td>
+                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>TV 65' Smart</td>
+                                    <td>Eletrônico</td>
+                                    <td>210,00</td>
+                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-default bg-gradient-success float-right" onclick="location.href='/Patrimonio/Index'">Ver Lista Completa</button>
+
+                    </div>
+                </div>
+                <!-- /.Item 1 - ITENS -->
+            </div>
+            <!-- /.Lado Esquerdo -->
+            
+            
+            <!--Lado Direito-->
+            <div class="col-lg-6">
+
+                <!--Item 1-->
+                <div class="card">
+                    <div class="card-header border-0">
+                        <h3 class="card-title">Lista de Compras</h3>
+                        <!--<div class="card-tools">
+                           <a href="#" class="btn btn-tool btn-sm">
+                               <i class="fas fa-download"></i>
+                           </a>
+                           <a href="#" class="btn btn-tool btn-sm">
+                               <i class="fas fa-bars"></i>
+                           </a>
+                               </div>-->
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-striped table-valign-middle">
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Categoria</th>
+                                    <th>Preço</th>
+                                    <th>More</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Monitor 27' Curvo</td>
+                                    <td>Eletrônico</td>
+                                    <td>900,00</td>
+                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Monitor 27' Curvo</td>
+                                    <td>Eletrônico</td>
+                                    <td>900,00</td>
+                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Monitor 27' Curvo</td>
+                                    <td>Eletrônico</td>
+                                    <td>900,00</td>
+                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Alexa Echo Dot 3</td>
+                                    <td>Eletrônico</td>
+                                    <td>210,00</td>
+                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>TV 65' Smart</td>
+                                    <td>Eletrônico</td>
+                                    <td>210,00</td>
+                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-default bg-gradient-success float-right">Cadastrar um Novo</button>
+                    </div>
+                </div>
+                <!-- /.Item 1 -->
+            </div>
+            <!-- /.Lado Direito -->
+        </div>
+        <!-- /.row -->
+
+
+       
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
