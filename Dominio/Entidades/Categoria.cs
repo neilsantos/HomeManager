@@ -7,11 +7,12 @@ namespace Dominio.Entidades;
    public class Categoria:EntidadeBase
     {
         public string Nome { get; set; }
-
+        public virtual List<Produto> Produtos { get; set; }
         public Categoria(string nome)
         {
-            Nome = nome;
+                    Nome = nome;
         }
     }
     
+
 
