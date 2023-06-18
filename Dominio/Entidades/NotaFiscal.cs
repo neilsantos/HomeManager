@@ -6,10 +6,19 @@ using System.Threading.Tasks;
 
 namespace Dominio.Entidades
 {
-    internal class NotaFiscal
+    public class NotaFiscal:EntidadeBase
     {
-        public string Local { get; set; } = "Url não informado";
-        public string Numero { get; set; } = "Número não informado";
-        public int IdProduto { get; set; }
+        public string Url { get; set; } = "Url não informado";
+        public string RefNumber { get; set; } = "Número não informado";
+        //public int IdProduto { get; set; }
+        public virtual Produto Produto { get; set; }
+
+
+        public NotaFiscal()
+        {
+            
+        }
+
     }
+
 }
