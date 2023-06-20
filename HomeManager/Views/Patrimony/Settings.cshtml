@@ -1,8 +1,11 @@
-﻿
+﻿@using Apresentacao.Models;
 @{
     ViewData["PageHeader"] = "Settings";
     ViewData["Title"] = "Patrimony > " + ViewData["PageHeader"];
+
+   
 }
+
 @section scripts
     {
     <script>
@@ -13,7 +16,7 @@
         })
     </script>
     }
-
+    
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
@@ -38,12 +41,28 @@
                             <tbody>
                                 @{
                                     Random rnd = new Random();
-                                    for (int i = 1; i < 5; i++)
+                                    //for (int i = 1; i < 5; i++)
+                                    //{
+                                    //    int num = rnd.Next(10,100);
+                                    //    <tr>
+                                    //        <td>@i.</td>
+                                    //        <td>Samsung</td>
+                                    //        <td>
+                                    //            <div class=" mt-2 progress progress-xs">
+                                    //                <div class="progress-bar progress-bar-danger" style="width: @num%"></div>
+                                    //            </div>
+                                    //        </td>
+                                    //        <td><span class="badge bg-success">@num%</span></td>
+                                    //        <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+                                    //    </tr>
+
+                                    //}
+                                    foreach (var item in @Model)
                                     {
-                                        int num = rnd.Next(10,100);
+                                        int num = rnd.Next(10, 100);
                                         <tr>
-                                            <td>@i.</td>
-                                            <td>Samsung</td>
+                                            <td>@item.Id</td>
+                                            <td>@item.Nome</td>
                                             <td>
                                                 <div class=" mt-2 progress progress-xs">
                                                     <div class="progress-bar progress-bar-danger" style="width: @num%"></div>
@@ -52,7 +71,6 @@
                                             <td><span class="badge bg-success">@num%</span></td>
                                             <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
                                         </tr>
-
                                     }
                                 }
                             </tbody>
@@ -71,7 +89,7 @@
                                
                         </div>
                         <div class="card-footer">
-                            <button id="submit" class="btn btn-success float-right" onclick="document.getElementById('nova-marca').removeAttribute('style'); document.getElementById('submit').innerHTML='Enviar'">Nova Marca</button>
+                            <button id="submit" class="btn btn-success float-right" onclick="document.getElementById('nova-marca').removeAttribute('style'); document.getElementById('submit').innerHTML='Salvar'">Nova Marca</button>
                         </div>
 
                     </div>
@@ -131,7 +149,7 @@
 
                         </div>
                         <div class="card-footer">
-                            <button id="submit2" class="btn btn-success float-right" onclick="document.getElementById('nova-categoria').removeAttribute('style'); document.getElementById('submit2').innerHTML='Enviar'">Nova Categoria</button>
+                            <button id="submit2" class="btn btn-success float-right" onclick="document.getElementById('nova-categoria').removeAttribute('style'); document.getElementById('submit2').innerHTML='Salvar'">Nova Categoria</button>
                         </div>
 
                     </div>

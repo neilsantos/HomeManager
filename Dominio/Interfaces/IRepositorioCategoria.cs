@@ -5,9 +5,7 @@ using Dominio.Entidades;
 
 namespace Dominio.Interfaces;
 
-
-    public interface IRepositorioCategoria : IRepositorio<Categoria> 
-    {
-
-    }
+public interface IRepositorioCategoria : IRepositorio<Categoria>
+{
+}
 

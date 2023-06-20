@@ -37,10 +37,10 @@
     </script>
 }
 
-<div class="row justify-content-center">
+<div class="row justify-content-center mt-5 pt-5">
     <div class="col-md-8 flex-column center">
+        <!--Novo Produto-->
         <div class="card card-default">
-
             <div class="card-header">
               <h3 class="card-title"><i class="fa-solid fa-square-plus"></i> Novo Produto</h3>
             </div>
@@ -118,6 +118,14 @@
                 </div>
             </div>
             
+        </div>
+    
+        <!--Novo Produto-->
+        <div class="callout callout-success">
+            <h5><i class="fa-regular fa-circle-question"></i> You may need to create a new Brand or Category first!</h5>
+            <div row col-4>
+                <button type="button" class="btn btn-block btn-success" onclick="location.href='@Url.Action("Settings", "Patrimonio")'"><i class="fa-solid fa-arrow-up-right-from-square"></i> Take-me There</button>
+            </div>
         </div>
     </div>
 </div>
