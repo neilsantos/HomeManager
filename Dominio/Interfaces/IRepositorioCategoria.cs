@@ -7,5 +7,6 @@ namespace Dominio.Interfaces;
 
 public interface IRepositorioCategoria : IRepositorio<Categoria>
 {
+    IEnumerable<Categoria> Ler();
 }
 
