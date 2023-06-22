@@ -1,6 +1,5 @@
 ﻿using Dominio.Entidades;
-using Newtonsoft.Json;
-using System;
+using Dominio.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,29 +7,15 @@ namespace Infraestrutura.Repositorios;
 
 public class RepositorioMarca : Repositorio<Marca>, IRepositorioMarca
 {
+    readonly Context _context;
+
     public RepositorioMarca()
     {
-        PopularResitorio();
+        _context = new();
     }
-
-    private readonly List<Marca> Marcas = new List<Marca>();
-
-    private void PopularResitorio()
+    public IDictionary<Marca, int> ContagemProdutoPorMarca()
     {
-        Marcas.Add(new Marca("Demo-Generico"));
-        Marcas.Add(new Marca("Microsoft"));
-        Marcas.Add(new Marca("Nintendo"));
-        Marcas.Add(new Marca("LG"));
-        Marcas.Add(new Marca("Sony"));
-
-        for (int i = 0; i < Marcas.Count; i++)
-        {
-            var marca = Marcas[i];
-            marca.Id = i + 1;
-        }
+        return _context.Marcas.Select(x => new { Marca = x, Total = x.Produtos.Count() }).ToDictionary(x => x.Marca, x => x.Total);
     }
-
-
-
 }
 

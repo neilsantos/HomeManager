@@ -1,3 +1,5 @@
+using Infraestrutura;
+
 namespace HomeManager
 {
     public class Program
@@ -5,6 +7,7 @@ namespace HomeManager
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddDbContext<Context>();//libera a injeção de dependencia
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();

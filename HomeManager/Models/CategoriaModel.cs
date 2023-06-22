@@ -1,8 +1,8 @@
 ﻿namespace Apresentacao.Models
 {
-    public class Category
+    public class CategoriaModel
     {
-        public int Id { get; set; }
         public string Nome { get; set; }
+        public int Percentual { get; set; }
     }
 }

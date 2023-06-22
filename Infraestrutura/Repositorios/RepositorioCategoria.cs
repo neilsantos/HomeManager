@@ -1,24 +1,19 @@
 ﻿using Dominio.Entidades;
 using Dominio.Interfaces;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Security.Cryptography;
 
 namespace Infraestrutura.Repositorios;
 
-class RepositorioCategoria : Repositorio<Categoria>, IRepositorioCategoria
+public class RepositorioCategoria : Repositorio<Categoria>, IRepositorioCategoria
 {
-    //private readonly List<Categoria> Categorias = new List<Categoria>();
-    Context context;
-    public RepositorioCategoria() 
+    readonly Context _context;
+    public RepositorioCategoria()
     {
-        context = new();
+        _context = new();
     }
-
-   
+    public IDictionary<Categoria, int> ContagemProdutoPorCategoria()
+    {
+        return _context.Categorias.Select(x => new { Categoria = x, Total = x.Produtos.Count() }).ToDictionary(x => x.Categoria, x => x.Total);
+    }
 }
 
 

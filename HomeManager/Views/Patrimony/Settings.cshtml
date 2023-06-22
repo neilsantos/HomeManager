@@ -1,10 +1,12 @@
-﻿
-@model List<Dominio.Entidades.Marca>
+﻿@using Apresentacao.Models
+@model Apresentacao.Models.PatrimonySettings
+
+
 @{
     ViewData["PageHeader"] = "Settings";
     ViewData["Title"] = "Patrimony > " + ViewData["PageHeader"];
 
-   
+    //PatrimonySettings dados = ViewData["dados"] as PatrimonySettings;
 }
 
 @section scripts
@@ -16,18 +18,57 @@
             $("#settings").attr("class", "nav-link active");
         })
     </script>
+    <script>
+        $(document).ready(function () {
+            $('#btn-nova-categoria').click(function () {
+                $('#nova-categoria').removeAttr('style');
+                $('#btn-cancel-categoria').removeAttr('style');
+                $(this).attr('style','display:none');
+            })
+            $('#salvar-categoria').click(function () {
+                let inputValue = $('#input-nova-categoria').val();
+                let payload = "{name=" + inputValue + "}"
+                console.log(payload);
+                //$.ajax({
+                //    url: "/NewCategory",
+                //    context: document.body
+                //}).done(function () {
+                //    $(this).addClass("done");
+                //});
+            })
+        })
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#btn-nova-marca').click(function () {
+                $('#nova-marca').removeAttr('style');
+                $('#btn-cancel-marca').removeAttr('style');
+                $(this).attr('style', 'display:none');
+            })
+            $('#salvar-categoria').click(function () {
+                let inputValue = $('#input-nova-marca').val();
+                let payload = "{name=" + inputValue + "}"
+                console.log(payload);
+                //$.ajax({
+                //    url: "/NewCategory",
+                //    context: document.body
+                //}).done(function () {
+                //    $(this).addClass("done");
+                //});
+            })
+        })
+    </script>
     }
-    
+
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
-       <div class="row">
-       <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-6">
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Marcas</h3>
                     </div>
-
                     <div class=" mt-3 px-4">
                         <table class="table table-sm">
                             <thead>
@@ -41,37 +82,20 @@
                             </thead>
                             <tbody>
                                 @{
-                                    Random rnd = new Random();
-                                    //for (int i = 1; i < 5; i++)
-                                    //{
-                                    //    int num = rnd.Next(10,100);
-                                    //    <tr>
-                                    //        <td>@i.</td>
-                                    //        <td>Samsung</td>
-                                    //        <td>
-                                    //            <div class=" mt-2 progress progress-xs">
-                                    //                <div class="progress-bar progress-bar-danger" style="width: @num%"></div>
-                                    //            </div>
-                                    //        </td>
-                                    //        <td><span class="badge bg-success">@num%</span></td>
-                                    //        <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-                                    //    </tr>
-
-                                    //}
-                                    foreach (var item in @Model)
+                                    foreach (var item in Model.ContagemMarcas)
                                     {
-                                        int num = rnd.Next(10, 100);
                                         <tr>
-                                            <td>@item.Id</td>
+                                            <td>#</td>
                                             <td>@item.Nome</td>
                                             <td>
                                                 <div class=" mt-2 progress progress-xs">
-                                                    <div class="progress-bar progress-bar-danger" style="width: @num%"></div>
+                                                    <div class="progress-bar progress-bar-danger" style="width: @item.Percentual%"></div>
                                                 </div>
                                             </td>
-                                            <td><span class="badge bg-success">@num%</span></td>
+                                            <td><span class="badge bg-success">@item.Percentual%</span></td>
                                             <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
                                         </tr>
+
                                     }
                                 }
                             </tbody>
@@ -80,23 +104,29 @@
 
                     <div class="form-horizontal">
                         <div class="card-body" id="nova-marca" style="display:none;">
-                          
-                               <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">Marca</span>
-                                    </div>
-                                    <input type="text" class="form-control" placeholder="Ex: Sony">
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Marca</span>
                                 </div>
-                               
+                                <input type="text" id="input-nova-marca" class="form-control" placeholder="ex: Microsoft">
+                                <span class="input-group-append">
+                                    <button type="button" id="salvar-marca" class="btn btn-success "><i class="fa-solid fa-check"></i></button>
+                                </span>
+                            </div>
+
                         </div>
-                        <div class="card-footer">
-                            <button id="submit" class="btn btn-success float-right" onclick="document.getElementById('nova-marca').removeAttribute('style'); document.getElementById('submit').innerHTML='Salvar'">Nova Marca</button>
+                        <div class="card-footer ">
+                            <div class="row float-right">
+                                <button type="button" id="btn-cancel-marca" class="btn btn-default mr-2" style="display:none;"><i class="fa-solid fa-xmark"></i></button>
+                                <button id="btn-nova-marca" class="btn btn-success float-right">Nova Marca</button>
+                            </div>
                         </div>
 
                     </div>
                 </div>
-       </div>
-       <div class="col-md-6">
+            </div> <!--Marcas-->
+            <div class="col-md-6">
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Categorias</h3>
@@ -115,21 +145,18 @@
                             </thead>
                             <tbody>
                                 @{
-                                    Random rnd2 = new Random();
-                                    for (int i = 1; i < 5; i++)
+                                    foreach (var item in Model.ContagemCategorias)
                                     {
-                                        int num2 = rnd.Next(10, 100);
                                         <tr>
-                                            <td>@i.</td>
-                                            <td>Eletrônicos</td>
+                                            <td>#</td>
+                                            <td>@item.Nome</td>
                                             <td>
                                                 <div class=" mt-2 progress progress-xs">
-                                                    <div class="progress-bar progress-bar-danger" style="width: @num2%"></div>
+                                                    <div class="progress-bar progress-bar-danger" style="width: @item.Percentual%"></div>
                                                 </div>
                                             </td>
-                                            <td><span class="badge bg-success">@num2%</span></td>
+                                            <td><span class="badge bg-success">@item.Percentual%</span></td>
                                             <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-
                                         </tr>
 
                                     }
@@ -145,18 +172,25 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Categoria</span>
                                 </div>
-                                <input type="text" class="form-control" placeholder="ex: Colecionáveis">
+                                <input type="text" id="input-nova-categoria" class="form-control" placeholder="ex: Colecionáveis">
+                                <span class="input-group-append">
+                                    <button type="button" id="salvar-categoria" class="btn btn-success "><i class="fa-solid fa-check"></i></button>
+                                </span>
                             </div>
 
                         </div>
-                        <div class="card-footer">
-                            <button id="submit2" class="btn btn-success float-right" onclick="document.getElementById('nova-categoria').removeAttribute('style'); document.getElementById('submit2').innerHTML='Salvar'">Nova Categoria</button>
+                        <div class="card-footer ">
+                            <div class="row float-right">
+                                <button type="button" id="btn-cancel" class="btn btn-default mr-2" style="display:none;"><i class="fa-solid fa-xmark"></i></button>
+                                <button id="btn-nova-categoria" class="btn btn-success float-right">Nova Categoria</button>
+                            </div>
                         </div>
+
 
                     </div>
                 </div>
-            </div>
-       </div>
+            </div> <!--Categorias-->
+        </div>
     </div>
 </section>
 
