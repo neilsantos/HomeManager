@@ -11,6 +11,7 @@
 
 @section scripts
     {
+
     <script>
         $(document).ready(function () {
             $("#patrimony").attr("class", "nav-item menu-open");
@@ -19,87 +20,180 @@
         })
     </script>
     <script>
+
+
         $(document).ready(function () {
             $('#btn-nova-categoria').click(function () {
-                $('#nova-categoria').removeAttr('style');
+                $('#nova-categoria').attr('style', 'display:block');
                 $('#btn-cancel-categoria').removeAttr('style');
-                $(this).attr('style','display:none');
+                $(this).attr('style', 'display:none');
             })
+
             $('#salvar-categoria').click(function () {
                 let inputValue = $('#input-nova-categoria').val();
-                let payload = "{name=" + inputValue + "}"
-                console.log(payload);
-                //$.ajax({
-                //    url: "/NewCategory",
-                //    context: document.body
-                //}).done(function () {
-                //    $(this).addClass("done");
-                //});
+                if (inputValue === '') {
+                    toastr.error('Filling is required to proceed!')
+                    $('#input-nova-categoria').attr('class', 'form-control border border-danger')
+                    setTimeout(function () {
+                        $('#input-nova-categoria').attr('class', 'form-control')
+                    }, 3000)
+                    return;
+                }
+                let payload = { "Nome": inputValue }
+                $(this).html('<i class="fas fa-redo-alt fa-spin"></i>')
+                $.ajax({
+                    data: JSON.stringify(payload),
+                    url: './NewCategory',
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    traditional: true,
+                    success: function (res) {
+                        toastr.success('Saved to Database!')
+                        window.setTimeout(function () { window.location.href = './Settings'; }, 2000)
+                        console.log("resposta:", res)
+                        //switch () {
+                        //    case 'success':
+                        //        toastr.success('Saved to Database!')
+                        //        window.setTimeout(function () { window.location.href = './'; }, 2000)
+                        //        break
+                        //    case 'error':
+                        //        toastr.error('Error, preset could not be saved!')
+                        //        break
+                        //    case 'equal':
+                        //        toastr.warning('There is already a preset registered with that name!')
+                        //        break
+                        //    default:
+                        //        toastr.error('Unexpected error')
+                        //}
+                    }
+                })
+                $(this).html('<i class="fa-solid fa-check"></i>')
             })
         })
     </script>
     <script>
+        //SALVAR MARCA
         $(document).ready(function () {
             $('#btn-nova-marca').click(function () {
-                $('#nova-marca').removeAttr('style');
-                $('#btn-cancel-marca').removeAttr('style');
+                $('#nova-marca').attr('style', 'display:block');
+                $('#btn-cancel-marca').attr('style', 'display:block');
                 $(this).attr('style', 'display:none');
             })
-            $('#salvar-categoria').click(function () {
+            $('#salvar-marca').click(function () {
                 let inputValue = $('#input-nova-marca').val();
-                let payload = "{name=" + inputValue + "}"
-                console.log(payload);
-                //$.ajax({
-                //    url: "/NewCategory",
-                //    context: document.body
-                //}).done(function () {
-                //    $(this).addClass("done");
-                //});
+                if (inputValue === '') {
+                    toastr.error('Filling is required to proceed!')
+                    $('#input-nova-marca').attr('class', 'form-control border border-danger')
+                    setTimeout(function () {
+                        $('#input-nova-marca').attr('class', 'form-control')
+                    }, 3000)
+                    return;
+                }
+                let payload = { "Nome": inputValue }
+                $(this).html('<i class="fas fa-redo-alt fa-spin"></i>')
+                $.ajax({
+                    data: JSON.stringify(payload),
+                    url: './NewBrand',
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    traditional: true,
+                    success: function (res) {
+                        toastr.success('Saved to Database!')
+                        window.setTimeout(function () { window.location.href = './Settings'; }, 2000)
+                        console.log("resposta:", res)
+                        //switch () {
+                        //    case 'success':
+                        //        toastr.success('Saved to Database!')
+                        //        window.setTimeout(function () { window.location.href = './'; }, 2000)
+                        //        break
+                        //    case 'error':
+                        //        toastr.error('Error, preset could not be saved!')
+                        //        break
+                        //    case 'equal':
+                        //        toastr.warning('There is already a preset registered with that name!')
+                        //        break
+                        //    default:
+                        //        toastr.error('Unexpected error')
+                        //}
+                    }
+                })
+                $(this).html('<i class="fa-solid fa-check"></i>')
             })
+        })
+    </script>
+    <script>
+        $('#btn-cancel-marca').click(function () {
+            $('#nova-marca').attr('style', 'display:none')
+            $('#btn-nova-marca').attr('style', 'display:block')
+            $(this).attr('style', 'display:none')
+        })
+        $('#btn-cancel-categoria').click(function () {
+            $('#nova-categoria').attr('style', 'display:none')
+            $('#btn-nova-categoria').attr('style', 'display:block')
+            $(this).attr('style', 'display:none')
         })
     </script>
     }
 
 <!-- Main content -->
-<section class="content">
-    <div class="container-fluid">
+@*<section class="content">
+    <div class="container-fluid">*@
+<div class="row justify-content-center mt-5 pt-2">
+  <div class="col-md-10 flex-column center">
+        
         <div class="row">
+            <!--Marcas-->
             <div class="col-md-6">
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Marcas</h3>
                     </div>
                     <div class=" mt-3 px-4">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>Itens</th>
-                                    <th>Registros</th>
-                                    <th style="width: 40px">%</th>
-                                    <th style="width: 15px"><i class="far fa-minus-square"></i></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{
-                                    foreach (var item in Model.ContagemMarcas)
-                                    {
-                                        <tr>
-                                            <td>#</td>
-                                            <td>@item.Nome</td>
-                                            <td>
-                                                <div class=" mt-2 progress progress-xs">
-                                                    <div class="progress-bar progress-bar-danger" style="width: @item.Percentual%"></div>
-                                                </div>
-                                            </td>
-                                            <td><span class="badge bg-success">@item.Percentual%</span></td>
-                                            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-                                        </tr>
+                        @{
+                            if (Model.ContagemMarcas.Count() == 0)
+                            {
+                                <dl>
+                                    <dt class="text-danger" style="font-size:20px"><i class="fa-solid fa-circle-info"></i>&nbsp;Vazio!</dt>
+                                    <dd>Parece que não temos nenhuma marca ainda! <i class="fa-regular fa-face-meh"></i><br>Crie uma, vamos precisar para cadastar um <a style="text-decoration:none" href="@Url.Action("NewProduct", "Patrimony")"> Produto</a></dd>
+                                </dl>
 
-                                    }
-                                }
-                            </tbody>
-                        </table>
+                            }
+                            else
+                            {
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Itens</th>
+                                            <th>Produtos por marca</th>
+                                            <th style="width: 40px">%</th>
+                                            <th style="width: 15px"><i class="far fa-minus-square"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            int i = 1;
+                                            foreach (var item in Model.ContagemMarcas)
+                                            {
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td>@item.Nome</td>
+                                                    <td>
+                                                        <div class=" mt-2 progress progress-xs">
+                                                            <div class="progress-bar progress-bar-danger" style="width: @item.Percentual%"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td><span class="badge bg-success">@item.Percentual%</span></td>
+                                                    <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+
+                        }
                     </div>
 
                     <div class="form-horizontal">
@@ -118,51 +212,69 @@
                         </div>
                         <div class="card-footer ">
                             <div class="row float-right">
-                                <button type="button" id="btn-cancel-marca" class="btn btn-default mr-2" style="display:none;"><i class="fa-solid fa-xmark"></i></button>
+                                <button type="button" id="btn-cancel-marca" class="btn-cancel btn btn-default mr-2" style="display:none;"><i class="fa-solid fa-xmark"></i></button>
                                 <button id="btn-nova-marca" class="btn btn-success float-right">Nova Marca</button>
                             </div>
                         </div>
 
                     </div>
                 </div>
-            </div> <!--Marcas-->
+            </div> <!--/Marcas-->
+            <!--Categorias-->
             <div class="col-md-6">
+               
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Categorias</h3>
                     </div>
 
                     <div class=" mt-3 px-4">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>Itens</th>
-                                    <th>Registros</th>
-                                    <th style="width: 40px">%</th>
-                                    <th style="width: 15px"><i class="far fa-minus-square"></i></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{
-                                    foreach (var item in Model.ContagemCategorias)
-                                    {
-                                        <tr>
-                                            <td>#</td>
-                                            <td>@item.Nome</td>
-                                            <td>
-                                                <div class=" mt-2 progress progress-xs">
-                                                    <div class="progress-bar progress-bar-danger" style="width: @item.Percentual%"></div>
-                                                </div>
-                                            </td>
-                                            <td><span class="badge bg-success">@item.Percentual%</span></td>
-                                            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-                                        </tr>
+                        @{
+                            if (Model.ContagemCategorias.Count == 0)
+                            {
+                                <dl>
+                                    <dt class="text-danger" style="font-size:20px"><i class="fa-solid fa-circle-info"></i>&nbsp;Vazio!</dt>
+                                    <dd>Parece que não temos nenhuma Categoria ainda! <i class="fa-regular fa-face-meh"></i><br>Crie uma, vamos precisar para cadastar um <a style="text-decoration:none" href="@Url.Action("NewProduct", "Patrimony")"> Produto</a></dd>
 
-                                    }
-                                }
-                            </tbody>
-                        </table>
+                                </dl>
+
+                            }
+                            else
+                            {
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Itens</th>
+                                            <th>Produtos por marca</th>
+                                            <th style="width: 40px">%</th>
+                                            <th style="width: 15px"><i class="far fa-minus-square"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            int j = 1;
+                                            foreach (var item in Model.ContagemCategorias)
+                                            {
+                                                <tr>
+                                                    <td>@j</td>
+                                                    <td>@item.Nome</td>
+                                                    <td>
+                                                        <div class=" mt-2 progress progress-xs">
+                                                            <div class="progress-bar progress-bar-danger" style="width: @item.Percentual%"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td><span class="badge bg-success">@item.Percentual%</span></td>
+                                                    <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+                                                </tr>
+                                                j++;
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        }
+
                     </div>
 
                     <div class="form-horizontal">
@@ -181,7 +293,7 @@
                         </div>
                         <div class="card-footer ">
                             <div class="row float-right">
-                                <button type="button" id="btn-cancel" class="btn btn-default mr-2" style="display:none;"><i class="fa-solid fa-xmark"></i></button>
+                                <button type="button" id="btn-cancel-categoria" class=" btn-cancel btn btn-default mr-2" style="display:none;"><i class="fa-solid fa-xmark"></i></button>
                                 <button id="btn-nova-categoria" class="btn btn-success float-right">Nova Categoria</button>
                             </div>
                         </div>
@@ -191,6 +303,21 @@
                 </div>
             </div> <!--Categorias-->
         </div>
+        
+        <div class="row mt-5">
+            <div class="col-sm-12">
+                <div class="callout callout-success">
+                    <h5><i class="fa-regular fa-circle-info"></i> Now, if you want to create a new Product...</h5>
+                 <div row col-4>
+                    <button type="button" class="btn btn-block btn-success" onclick="location.href='@Url.Action("NewProduct", "Patrimony")'"><i class="fa-solid fa-arrow-up-right-from-square"></i> Let's Go!</button>
+                 </div>
+                </div>
+
+                
+            </div>
+        </div>
+
+        
     </div>
-</section>
+</div>
 

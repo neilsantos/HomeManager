@@ -21,12 +21,9 @@ namespace Apresentacao.Controllers
 
             var ContagemPorMarca = repositorioMarca.ContagemProdutoPorMarca();
             var ContagemPorCategoria = repositorioCategoria.ContagemProdutoPorCategoria();
+            var ContagemProdutos = repositorioProduto.Count();
 
-            List<MarcaModel> ContagemMarcas = new();
-            List<CategoriaModel> ContagemCategorias = new();
-
-            PatrimonySettings patrimonySettings = new(ContagemMarcas, ContagemCategorias);
-
+            PatrimonySettings patrimonySettings = new(ContagemPorMarca, ContagemPorCategoria, ContagemProdutos);
 
             return View(patrimonySettings);
         }

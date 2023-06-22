@@ -1,5 +1,7 @@
 ﻿using Infraestrutura.Repositorios;
 using Apresentacao.Models;
+using Dominio.Entidades;
+using System.Text.RegularExpressions;
 
 namespace Apresentacao.Models
 {
@@ -9,9 +11,24 @@ namespace Apresentacao.Models
         public List<MarcaModel> ContagemMarcas = new();
         public List<CategoriaModel> ContagemCategorias = new();
 
-        public PatrimonySettings(List<MarcaModel> ContagemMarcas, List<CategoriaModel> ContagemCategorias)
+        public PatrimonySettings(IDictionary<Marca, int> contagemMarcas, IDictionary<Categoria, int> contagemCategorias, int totalProdutos)
         {
-            
+            foreach (var marca in contagemMarcas)
+            {
+                ContagemMarcas.Add(new MarcaModel
+                {
+                    Nome = marca.Key.Nome,
+                    Percentual = totalProdutos != 0 ? ((marca.Value * 100) / totalProdutos) : 52
+                });
+            }
+            foreach (var categoria in contagemCategorias)
+            {
+                ContagemCategorias.Add(new CategoriaModel
+                {
+                    Nome = categoria.Key.Nome,
+                    Percentual = totalProdutos != 0 ? ((categoria.Value * 100) / totalProdutos) : 52
+                });
+            }
         }
 
         private void PopularLista() 
