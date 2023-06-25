@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Apresentacao.Models
+namespace Apresentacao.Models.PatrimonySettings
 {
     public class MarcaModel
     {

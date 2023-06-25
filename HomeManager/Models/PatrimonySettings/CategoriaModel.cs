@@ -1,4 +1,4 @@
-﻿namespace Apresentacao.Models
+﻿namespace Apresentacao.Models.PatrimonySettings
 {
     public class CategoriaModel
     {

@@ -1,4 +1,4 @@
-﻿using Apresentacao.Models;
+﻿using Apresentacao.Models.PatrimonySettings;
 using Dominio.Entidades;
 using Infraestrutura;
 using Infraestrutura.Repositorios;
@@ -32,6 +32,12 @@ namespace Apresentacao.Controllers
         {
             return View();
         }
+
+        public IActionResult ViewProduct()
+        {
+            return View();
+        }
+
 
         //CRUD
         [HttpPost]
