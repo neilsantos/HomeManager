@@ -3,6 +3,8 @@
 Assets/
 /HomeManager/.vs/
 /.vs
+.vs/
+HomeManager/.vs/
 
 # User-specific files
 *.suo
