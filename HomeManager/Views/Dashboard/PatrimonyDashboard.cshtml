@@ -48,13 +48,15 @@
     </script>
 
     <script>
+        
         $.ajax({
             url: './PricePerCategory',
             type: 'GET',
             contentType: 'application/json; charset=utf-8',
             traditional: true,
             success: function (response) {
-                
+                console.log(response)
+
                 var ticksStyle = {
                     fontColor: '#495057',
                     fontStyle: 'bold'

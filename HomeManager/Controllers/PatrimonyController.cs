@@ -1,4 +1,5 @@
-﻿using Apresentacao.Models.PatrimonySettings;
+﻿using Apresentacao.Models.Patrimony.NewProduct;
+using Apresentacao.Models.Patrimony.Settings;
 using Dominio.Entidades;
 using Infraestrutura;
 using Infraestrutura.Repositorios;
@@ -29,8 +30,15 @@ namespace Apresentacao.Controllers
         }
 
         public IActionResult NewProduct()
-        {
-            return View();
+        {   
+            RepositorioCategoria categoryRepository = new();
+            RepositorioMarca brandRepository = new();
+
+            var categories = categoryRepository.Ler().ToList();
+            var brands = brandRepository.Ler().ToList();
+
+            NewProduct product = new(brands,categories);
+            return View(product);
         }
 
         public IActionResult ViewProduct()
@@ -59,6 +67,19 @@ namespace Apresentacao.Controllers
             try
             {
                 await contexto.Categorias.AddAsync(categoria);
+                await contexto.SaveChangesAsync();
+                return Ok();
+
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewProduct([FromServices] Context contexto, [FromBody] Produto produto)
+        {
+            try
+            {
+                await contexto.Produtos.AddAsync(produto);
                 await contexto.SaveChangesAsync();
                 return Ok();
 

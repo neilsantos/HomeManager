@@ -1,4 +1,5 @@
-﻿
+﻿@using Apresentacao.Models.Patrimony.NewProduct
+@model NewProduct
 @{
     ViewData["PageHeader"] = "New Product";
     ViewData["Title"] = "Patrimony > " + ViewData["PageHeader"];
@@ -8,10 +9,9 @@
     <script src="~/plugins/inputmask/jquery.inputmask.min.js"></script>
 
     <script>
+        //Masking
         $(function () {
-
             $('[data-mask]').inputmask()
-
             let im = new Inputmask({
                 alias: 'currency',
                 prefix: 'R$ ',
@@ -22,73 +22,159 @@
 
                 },
             })
-
-
-            let moneyField = document.getElementById('money');
+            let moneyField = document.getElementById('price');
             im.mask(moneyField)
-
+            if (document.getElementById('money_hacky')==null)
+                return;
             let moneyHackyField = document.getElementById('money_hacky');
             let value = moneyHackyField.value
             im.mask(moneyHackyField)
             moneyHackyField.value = Number(value)
-
         })
-
     </script>
+
+    <script>
+        //saving a product
+        $(document).ready(function () {
+
+            //Validation
+            let isSafetoProceed = true;
+            $('#new-product').click(function () {
+                let show = true;
+                $('.product-data').each(function(){
+                    if ($(this).val() == "" || $(this).val() == null) {
+                        isSafetoProceed = false;
+                        
+                        if(show){
+                            toastr.error("Product can't be saved without these informations")
+                            show = false;
+                        }
+                        if ($(this).attr('id') == "brand-select" || $(this).attr('id') == "category-select")
+                            $(this).attr('class', 'custom-select is-invalid')
+                        else
+                            $(this).attr('class', 'form-control product-data is-invalid')
+                        
+                        setTimeout(() => {
+                            if ($(this).attr('id') == "brand-select" || $(this).attr('id') == "category-select")
+                                $(this).attr('class', 'custom-select product-data')
+                            else
+                                $(this).attr('class', 'form-control product-data')
+                            isSafetoProceed = true
+                        }, 3000);
+                    }
+                })
+
+                if (isSafetoProceed){
+                    
+                    //getting Inputs values
+                    let name = $('#name').val();
+                    let model = $('#model').val();
+                    let price = $('#price').val();
+                    let serialNumber = $('#serial-number').val();
+                    let brandId = $('#brand-select').find(":selected").val()
+                    let categoryId = $('#category-select').find(":selected").val()
+
+                    
+                    let payload = { 
+                        "Nome": name,
+                        "Modelo" : model,
+                        "valor" : price,
+                        "numeroDeSerie": serialNumber,
+                        "marcaId" : brandId,
+                        "categoriaId": categoryId
+                    }
+                    console.log(JSON.stringify(payload))
+                    //$(this).html('<i class="fas fa-redo-alt fa-spin"></i>')
+                    //$.ajax({
+                    //    data: JSON.stringify(payload),
+                    //    url: './NewBrand',
+                    //    type: 'POST',
+                    //    contentType: 'application/json; charset=utf-8',
+                    //    traditional: true,
+                    //    success: function (res) {
+                    //        toastr.success('Saved to Database!')
+                    //        window.setTimeout(function () { window.location.href = './Settings'; }, 2000)
+                    //        console.log("resposta:", res)
+                    //        //switch () {
+                    //        //    case 'success':
+                    //        //        toastr.success('Saved to Database!')
+                    //        //        window.setTimeout(function () { window.location.href = './'; }, 2000)
+                    //        //        break
+                    //        //    case 'error':
+                    //        //        toastr.error('Error, preset could not be saved!')
+                    //        //        break
+                    //        //    case 'equal':
+                    //        //        toastr.warning('There is already a preset registered with that name!')
+                    //        //        break
+                    //        //    default:
+                    //        //        toastr.error('Unexpected error')
+                    //        //}
+                    //    }
+                    //})
+                    //$(this).html('<i class="fa-solid fa-check"></i>')
+
+                }
+                
+            })
+        })
+    </script>
+   
 }
 
 <div class="row justify-content-center mt-5 pt-5">
     <div class="col-md-8 flex-column center">
-        <!--Novo Produto-->
+        <!--New Product-->
         <div class="card card-default">
             <div class="card-header">
-              <h3 class="card-title"><i class="fa-solid fa-square-plus"></i> Novo Produto</h3>
+              <h3 class="card-title"><i class="fa-solid fa-square-plus"></i> New Product</h3>
             </div>
             <div class="card-body ">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">Name</span>
+                                <span class="input-group-text label">Name</span>
                             </div>
-                            <input type="text" class="form-control" placeholder="ex: monitor 27'">
+                            <input id="name" type="text" class="form-control product-data" placeholder="ex: monitor 27'">
                         </div>
-                    </div> <!--Nome -->
+                    </div> <!--/name -->
                     <div class="col-md-6">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">Model</span>
+                                <span class="input-group-text label">Model</span>
                             </div>
-                            <input type="text" class="form-control" placeholder="ex:F390 Series ">
+                            <input id="model" type="text" class="form-control product-data" placeholder="ex:F390 Series ">
                         </div>
-                    </div> <!--Model-->
+                    </div> <!--/Model-->
                     <div class="col-md-6">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">R$</span>
+                                <span class="input-group-text label">R$</span>
                             </div>
-                            <input type="text" class="form-control" id="money" name="money">
+                            <input type="text" class="form-control product-data" id="price" name="price">
                         </div>
-                    </div> <!--Price -->
+                    </div> <!--/Price -->
                     <div class="col-md-6">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa-solid fa-barcode"></i></span>
+                                <span class="input-group-text label"><i class="fa-solid fa-barcode"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="SerialNumber">
+                            <input id="serial-number" type="text" class="form-control product-data" placeholder="SerialNumber">
                         </div>
-                    </div> <!--Serial Number -->
+                    </div> <!--/Serial Number -->
                     <div class="col-md-6">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">Marca</span>
+                                <span class="input-group-text">Brand</span>
                             </div>
-                            <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon">
-                                <option selected>Choose...</option>
-                                <option value="1">Eletrônicos</option>
-                                <option value="2">Móveis</option>
-                                <option value="3">Colecionáveis</option>
-                                <option value="4">Eletrodoméstico</option>
+                            <select class="custom-select product-data" id="brand-select" aria-label="Example select with button addon">
+                                <option selected disabled>Choose...</option>
+                                @{
+                                    foreach (var brand in Model.Marcas)
+                                    {
+                                        <option value="@brand.Id">@brand.Nome</option>
+                                    }
+                                }
 
                             </select>
                         </div>
@@ -98,13 +184,14 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Category</span>
                             </div>
-                            <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon">
-                                <option selected>Choose...</option>
-                                <option value="1">Eletrônicos</option>
-                                <option value="2">Móveis</option>
-                                <option value="3">Colecionáveis</option>
-                                <option value="4">Eletrodoméstico</option>
-
+                            <select class="custom-select product-data" id="category-select" aria-label="Example select with button addon">
+                                <option selected disabled>Choose...</option>
+                                @{
+                                    foreach (var category in Model.Categorias)
+                                    {
+                                        <option value="@category.Id">@category.Nome</option>
+                                    }
+                                }
                             </select>
                         </div>
                     </div> <!--Category-->
@@ -112,9 +199,9 @@
             </div>
             <div class="card-footer ">
                 <div class="row float-right">
-                    
-                <button type="button" class="btn btn-danger mr-2"><i class="fa-solid fa-xmark"></i></button>
-                <button type="button" class="btn btn-success"><i class="fa-solid fa-check"></i> Save</button>
+
+                    <button type="button" class="btn btn-danger mr-2" onclick="history.back()"><i class="fa-solid fa-xmark"></i></button>
+                <button id="new-product" type="button" class="btn btn-success"><i class="fa-solid fa-check"></i> Save</button>
                 </div>
             </div>
             
@@ -122,7 +209,7 @@
     
         <!--Novo Produto-->
         <div class="callout callout-success">
-            <h5><i class="fa-regular fa-circle-question"></i> You may need to create a new Brand or Category first!</h5>
+            <h5><i class="fa-regular fa-circle-question" ></i> You may need to create a new Brand or Category first!</h5>
             <div row col-4>
                 <button type="button" class="btn btn-block btn-success" onclick="location.href='@Url.Action("Settings", "Patrimony")'"><i class="fa-solid fa-arrow-up-right-from-square"></i> Take-me There</button>
             </div>

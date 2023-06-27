@@ -1,4 +1,4 @@
-﻿@using Apresentacao.Models.PatrimonySettings
+﻿@using Apresentacao.Models.Patrimony.Settings
 @model PatrimonySettings
 
 
@@ -305,9 +305,10 @@
         </div>
         
         <div class="row mt-5">
+            
             <div class="col-sm-12">
                 <div class="callout callout-success">
-                    <h5><i class="fa-regular fa-circle-info"></i> Now, if you want to create a new Product...</h5>
+                    <h5><i class="fa-regular fa-circle-check" style="color: #218838;"></i> Now, if you want to create a new Product...</h5>
                  <div row col-4>
                     <button type="button" class="btn btn-block btn-success" onclick="location.href='@Url.Action("NewProduct", "Patrimony")'"><i class="fa-solid fa-arrow-up-right-from-square"></i> Let's Go!</button>
                  </div>

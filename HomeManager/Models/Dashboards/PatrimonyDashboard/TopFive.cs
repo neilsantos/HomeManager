@@ -1,4 +1,4 @@
-﻿namespace Apresentacao.Models.PatrimonyDashboard
+﻿namespace Apresentacao.Models.Dashboards.PatrimonyDashboard
 {
     public class TopFive
     {
@@ -9,7 +9,7 @@
 
         public TopFive(List<TopFive> topfive)
         {
-                        
+
         }
 
     }
