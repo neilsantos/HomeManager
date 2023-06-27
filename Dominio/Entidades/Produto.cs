@@ -10,8 +10,8 @@ public class Produto : EntidadeBase
 {
     public string Nome { get; set; }
 
-    public virtual Produto ProdutoPai { get; set; }
-    public int ProdutoPaiId { get; set; }
+    public virtual Produto? ProdutoPai { get; set; }
+    public int? ProdutoPaiId { get; set; }
 
     public virtual Categoria Categoria { get; set; }
     public int CategoriaId { get; set; }
@@ -38,9 +38,10 @@ public class Produto : EntidadeBase
 
     }
 
-    public Produto(string nome, Categoria categoria, Marca marca, double valor)
+    public Produto(string nome, string modelo, Categoria categoria, Marca marca, double valor)
     {
         Nome = nome ?? throw new Exception("É Obrigatório Registrar o Nome");
+        Modelo = modelo;
         Categoria = categoria ?? throw new Exception("É Obrigatório Ter uma Categoria");
         Marca = marca ?? throw new Exception("É Obrigatório Ter uma Marca");
         Valor = valor;
@@ -52,18 +53,18 @@ public class Produto : EntidadeBase
         return Acessorios;
     }
 
-    public void AdicionarAcessorio(string nome, float valor = 0)
+    public void AdicionarAcessorio(string nome, string modelo,float valor = 0)
     {
-        var acessorio = new Produto(nome, Categoria, Marca, valor);
+        var acessorio = new Produto(nome, modelo, Categoria, Marca, valor);
         acessorio.ProdutoPai = this;
         _acessorios.Add(acessorio);
         var maxId = _acessorios.Max(x => x.Id);
         acessorio.Id = ++maxId;
     }
 
-    public void AdicionarAcessorio(string nome, float valor, Marca marca)
+    public void AdicionarAcessorio(string nome, string modelo, float valor, Marca marca)
     {
-        var acessorio = new Produto(nome, Categoria, marca, valor);
+        var acessorio = new Produto(nome, modelo, Categoria, marca, valor);
         _acessorios.Add(acessorio);
         var maxId = _acessorios.Max(x => x.Id);
         acessorio.Id = ++maxId;

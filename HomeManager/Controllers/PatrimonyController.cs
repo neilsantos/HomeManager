@@ -1,4 +1,5 @@
 ﻿using Apresentacao.Models.Patrimony.NewProduct;
+using Apresentacao.Models.Patrimony.Products;
 using Apresentacao.Models.Patrimony.Settings;
 using Dominio.Entidades;
 using Infraestrutura;
@@ -11,7 +12,16 @@ namespace Apresentacao.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            RepositorioProduto repositorioProduto = new();
+            var allProducts = repositorioProduto.Ler().ToList();
+
+            List<Products> products = new();
+            foreach (var product in allProducts)
+            {
+                products.Add(new(product.Nome, product.Marca.Nome, product.Categoria.Nome,product.Valor.ToString()));
+            }
+
+            return View(products);
         }
 
         public IActionResult Settings()
@@ -30,14 +40,14 @@ namespace Apresentacao.Controllers
         }
 
         public IActionResult NewProduct()
-        {   
+        {
             RepositorioCategoria categoryRepository = new();
             RepositorioMarca brandRepository = new();
 
             var categories = categoryRepository.Ler().ToList();
             var brands = brandRepository.Ler().ToList();
 
-            NewProduct product = new(brands,categories);
+            BrandsAndCategories product = new(brands, categories);
             return View(product);
         }
 
@@ -47,7 +57,8 @@ namespace Apresentacao.Controllers
         }
 
 
-        //CRUD
+        //C-UD
+        // -_---_--_-____-_--_---_---[CREATE]____--__--_-_--_-____--__-_--___--_
         [HttpPost]
         public async Task<IActionResult> NewBrand([FromServices] Context contexto, [FromBody] Marca marca)
         {
@@ -75,8 +86,12 @@ namespace Apresentacao.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> NewProduct([FromServices] Context contexto, [FromBody] Produto produto)
+        public async Task<IActionResult> NewProduct([FromServices] Context contexto, [FromBody] NewProduct product)
         {
+            var category = contexto.Categorias.Find(product.CategoryId);
+            var brand = contexto.Marcas.Find(product.BrandId);
+            var price = double.Parse(product.Price);
+            Produto produto = new(product.Name, product.Model, category, brand, price);
             try
             {
                 await contexto.Produtos.AddAsync(produto);
@@ -84,9 +99,43 @@ namespace Apresentacao.Controllers
                 return Ok();
 
             }
-            catch (Exception ex) { return BadRequest(ex.Message); }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("==============================================================\n\n\n\n");
+                Console.WriteLine(ex);
+                return BadRequest(ex.Message);
+            }
         }
 
+        // -_---_--_-____-_--_---_---[UPDATE]____--__--_-_--_-____--__-_--___--_
+        public IActionResult UpdateBrand()
+        {
+            return View();
+        }
+        public IActionResult UpdateCategory()
+        {
+            return View();
+        }
+        public IActionResult UpdateProduct()
+        {
+            return View();
+        }
+
+
+        // -_---_--_-____-_--_---_---[DELETE]____--__--_-_--_-____--__-_--___--_
+        public IActionResult DeleteBrand()
+        {
+            return View();
+        }
+        public IActionResult DeleteCategory()
+        {
+            return View();
+        }
+        public IActionResult DeleteProduct()
+        {
+            return View();
+        }
 
     }
 }

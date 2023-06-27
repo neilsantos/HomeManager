@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Apresentacao.Models.Patrimony.Products
+@model Products
+@{
     ViewData["PageHeader"] = "General";
     ViewData["Title"] = "Patrimony > " + ViewData["PageHeader"];
 }
@@ -48,71 +50,71 @@
                 <div class="card">
                     <div class="card-header d-flex p-0">
                         <ul class="nav nav-pills mr-auto p-2">
-                            <li class="nav-item"><a class="nav-link mr-3" href="#" onclick="changeIconView()"><i id="change-view-icon" class="fas fa-bars"></i></a></li>
+                            @*<li class="nav-item"><a class="nav-link mr-3" href="#" onclick="changeIconView()"><i id="change-view-icon" class="fas fa-bars"></i></a></li>*@
                             <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Todos</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Eletrônicos</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Eletrodomésticos</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#tab_4" data-toggle="tab">Móveis</a></li>
+                            @{
+                                for (int i = 2; i < 5; i++)
+                                {
+                                    <li class="nav-item"><a class="nav-link" href="#tab_@i" data-toggle="tab">@i</a></li>
+                                }
+                            }
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
-                            <!--Todos-->
+                            <!--TAB ALL-->
                             <div class="tab-pane active" id="tab_1">
-                               <div class="row">
-                                    @{
-                                        for (int i = 0; i < 5; i++)
-                                        {
-                                            <div class="col-md-3">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                       <h5>Monitor Curvo 27'</h5>
-                                                    </div>
 
-                                                    <div class="card-body p-0">
-                                                        
-                                                        <ul class="products-list product-list-in-card pl-2 pr-2">
-                                                            <li class="item">
-                                                                
-                                                                <div class="product-img mt-3 mr-3">
-                                                                    <img src="~/theme/img/iconpack/monitor.png" alt="Product Image" class="img-size-50">
-                                                                </div>
-
-                                                                    <span class=" badge badge-warning float-right">R$1.029,00</span>
-                                                                <div class="text-nowrap mt-3">
-                                                                    <a href="javascript:void(0)" class="product-title">
-                                                                        Samsung
-                                                                    </a>
-                                                                    <span class="product-description">
-                                                                        F390 Series C27F390FH
-                                                                    </span>
-                                                                    
-                                                                </div>
-                                                            </li>
-
-                                                        </ul>
-                                                    </div>
-
-                                                    <div class="card-footer text-center">
-                                                        <a href="javascript:void(0)" class="uppercase">More Information</a>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        }
-                                    }
-                                    
-                               </div>
+                            <div class="row">
+                                <div class="table-responsive p-0" style="height: 700px;">
+                                    <table class="table table-head-fixed text-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Nome1</th>
+                                                <th>Marca</th>
+                                                <th>Modelo</th>
+                                                <th>Valor</th>
+                                                <th>NFe</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                        <td>Monitor LG</td>
+                                                        <td>Samsung</td>
+                                                        <td>F390 Series C27F390FH</td>
+                                                        <td>1.029,00</td>
+                                                        <td><a class="nav-link">NFe <span class="float-right badge bg-danger">VISUALIZAR</span></a></td>
+                                                    </tr>
+                                                }
+                                                for (int i = 0; i < 20; i++)
+                                                {
+                                                    <tr>
+                                                        <td>Monitor LG</td>
+                                                        <td>Samsung</td>
+                                                        <td>F390 Series C27F390FH</td>
+                                                        <td>1.029,00</td>
+                                                        <td><a class="nav-link">NFe <span class="float-right badge bg-danger">VISUALIZAR</span></a></td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                               
                             </div>
 
-                            <!--Eletrônicos-->
+                            <!--TAB-->
                             <div class="tab-pane" id="tab_2">
                                 <div class="row">
                                     <div class="table-responsive p-0" style="height: 700px;">
                                         <table class="table table-head-fixed text-nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th>Nome</th>
+                                                    <th>Nome2<th>
                                                     <th>Marca</th>
                                                     <th>Modelo</th>
                                                     <th>Valor</th>
@@ -137,14 +139,14 @@
                                 </div>
                             </div>
 
-                            <!--Eletrodomésticos-->
+                            <!--TAB-->
                             <div class="tab-pane" id="tab_3">
                                 <div class="row">
                                     <div class="table-responsive p-0" style="height: 700px;">
                                         <table class="table table-head-fixed text-nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th>Nome</th>
+                                                    <th>Nome3</th>
                                                     <th>Marca</th>
                                                     <th>Modelo</th>
                                                     <th>Valor</th>
@@ -177,7 +179,7 @@
                                         <table class="table table-head-fixed text-nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th>Nome</th>
+                                                    <th>Nome4</th>
                                                     <th>Marca</th>
                                                     <th>Modelo</th>
                                                     <th>Valor</th>

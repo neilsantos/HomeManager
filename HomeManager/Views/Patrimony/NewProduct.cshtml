@@ -1,5 +1,5 @@
 ﻿@using Apresentacao.Models.Patrimony.NewProduct
-@model NewProduct
+@model BrandsAndCategories
 @{
     ViewData["PageHeader"] = "New Product";
     ViewData["Title"] = "Patrimony > " + ViewData["PageHeader"];
@@ -69,49 +69,49 @@
                     //getting Inputs values
                     let name = $('#name').val();
                     let model = $('#model').val();
-                    let price = $('#price').val();
+                    let price = $('#price').val().replace('R$ ', '');
                     let serialNumber = $('#serial-number').val();
                     let brandId = $('#brand-select').find(":selected").val()
                     let categoryId = $('#category-select').find(":selected").val()
 
                     
                     let payload = { 
-                        "Nome": name,
-                        "Modelo" : model,
-                        "valor" : price,
-                        "numeroDeSerie": serialNumber,
-                        "marcaId" : brandId,
-                        "categoriaId": categoryId
+                        "Name": name,
+                        "Model": model.toUpperCase(),
+                        "Price" : price,
+                        "SerialNumber": serialNumber.toUpperCase(),
+                        "BrandId" : brandId,
+                        "CategoryId": categoryId
                     }
                     console.log(JSON.stringify(payload))
-                    //$(this).html('<i class="fas fa-redo-alt fa-spin"></i>')
-                    //$.ajax({
-                    //    data: JSON.stringify(payload),
-                    //    url: './NewBrand',
-                    //    type: 'POST',
-                    //    contentType: 'application/json; charset=utf-8',
-                    //    traditional: true,
-                    //    success: function (res) {
-                    //        toastr.success('Saved to Database!')
-                    //        window.setTimeout(function () { window.location.href = './Settings'; }, 2000)
-                    //        console.log("resposta:", res)
-                    //        //switch () {
-                    //        //    case 'success':
-                    //        //        toastr.success('Saved to Database!')
-                    //        //        window.setTimeout(function () { window.location.href = './'; }, 2000)
-                    //        //        break
-                    //        //    case 'error':
-                    //        //        toastr.error('Error, preset could not be saved!')
-                    //        //        break
-                    //        //    case 'equal':
-                    //        //        toastr.warning('There is already a preset registered with that name!')
-                    //        //        break
-                    //        //    default:
-                    //        //        toastr.error('Unexpected error')
-                    //        //}
-                    //    }
-                    //})
-                    //$(this).html('<i class="fa-solid fa-check"></i>')
+                    $(this).html('<i class="fas fa-redo-alt fa-spin"></i>')
+                    $.ajax({
+                        data: JSON.stringify(payload),
+                        url: './NewProduct',
+                        type: 'POST',
+                        contentType: 'application/json; charset=utf-8',
+                        traditional: true,
+                        success: function (res) {
+                            toastr.success('Saved to Database!')
+                            window.setTimeout(function () { window.location.href = './Settings'; }, 2000)
+                            console.log("resposta:", res)
+                            //switch () {
+                            //    case 'success':
+                            //        toastr.success('Saved to Database!')
+                            //        window.setTimeout(function () { window.location.href = './'; }, 2000)
+                            //        break
+                            //    case 'error':
+                            //        toastr.error('Error, preset could not be saved!')
+                            //        break
+                            //    case 'equal':
+                            //        toastr.warning('There is already a preset registered with that name!')
+                            //        break
+                            //    default:
+                            //        toastr.error('Unexpected error')
+                            //}
+                        }
+                    })
+                    $(this).html('<i class="fa-solid fa-check"></i> Save')
 
                 }
                 
@@ -135,7 +135,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text label">Name</span>
                             </div>
-                            <input id="name" type="text" class="form-control product-data" placeholder="ex: monitor 27'">
+                            <input id="name" type="text" class="form-control product-data" placeholder="ex: monitor 27'" value="Monitor 24'">
                         </div>
                     </div> <!--/name -->
                     <div class="col-md-6">
@@ -143,7 +143,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text label">Model</span>
                             </div>
-                            <input id="model" type="text" class="form-control product-data" placeholder="ex:F390 Series ">
+                            <input id="model" type="text" class="form-control product-data" placeholder="ex:F390 Series" value="24GM77">
                         </div>
                     </div> <!--/Model-->
                     <div class="col-md-6">
@@ -151,7 +151,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text label">R$</span>
                             </div>
-                            <input type="text" class="form-control product-data" id="price" name="price">
+                            <input type="text" class="form-control product-data" id="price" name="price" value="1.100,00">
                         </div>
                     </div> <!--/Price -->
                     <div class="col-md-6">
@@ -159,7 +159,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text label"><i class="fa-solid fa-barcode"></i></span>
                             </div>
-                            <input id="serial-number" type="text" class="form-control product-data" placeholder="SerialNumber">
+                            <input id="serial-number" type="text" class="form-control product-data" placeholder="SerialNumber" value="703NTEP4U532">
                         </div>
                     </div> <!--/Serial Number -->
                     <div class="col-md-6">

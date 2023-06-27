@@ -8,7 +8,6 @@
 
 
 
-
         public Graphics(int labelsCount, List<string> labels, List<int> data)
         {
             Labels = labels;

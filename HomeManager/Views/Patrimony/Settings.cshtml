@@ -184,7 +184,7 @@
                                                         </div>
                                                     </td>
                                                     <td><span class="badge bg-success">@item.Percentual%</span></td>
-                                                    <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+                                                    <td><a href="#"><i class="fa-solid fa-pen-to-square"></i></a></td>
                                                 </tr>
                                                 i++;
                                             }
@@ -256,7 +256,7 @@
                                             int j = 1;
                                             foreach (var item in Model.ContagemCategorias)
                                             {
-                                                <tr>
+                                                <tr data-content="@item.Nome">
                                                     <td>@j</td>
                                                     <td>@item.Nome</td>
                                                     <td>
@@ -265,7 +265,7 @@
                                                         </div>
                                                     </td>
                                                     <td><span class="badge bg-success">@item.Percentual%</span></td>
-                                                    <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+                                                    <td><a href="#"><i class="fa-solid fa-pen-to-square"></i></a></td>
                                                 </tr>
                                                 j++;
                                             }

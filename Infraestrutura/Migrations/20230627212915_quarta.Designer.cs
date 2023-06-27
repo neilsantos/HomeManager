@@ -4,6 +4,7 @@ using Infraestrutura;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infraestrutura.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20230627212915_quarta")]
+    partial class quarta
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,6 +106,7 @@ namespace Infraestrutura.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("ProdutoPaiId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<double>("Valor")
@@ -145,7 +149,8 @@ namespace Infraestrutura.Migrations
                     b.HasOne("Dominio.Entidades.Produto", "ProdutoPai")
                         .WithMany("Acessorios")
                         .HasForeignKey("ProdutoPaiId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
 
                     b.Navigation("Categoria");
 

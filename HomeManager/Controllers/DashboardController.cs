@@ -1,4 +1,5 @@
 ﻿using Apresentacao.Models.Dashboards.PatrimonyDashboard;
+using Infraestrutura.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -22,9 +23,22 @@ namespace HomeManager.Controllers
         }
 
         public IActionResult CountPerCategory()
-        {   
-            List<string> labels = new() { "Eletrônicos", "Móveis", "Eletrodomésticos", "Colecionáveis","Extra","Extra2", "Extra3", "Extra 4" };
-            List<int> data = new() { 50, 5, 5, 15,25,15,30,50 };
+        {
+            RepositorioProduto repositorioProduto = new();
+            RepositorioCategoria repositorioCategoria = new();
+
+            var ContagemPorCategoria = repositorioCategoria.ContagemProdutoPorCategoria();
+            var ContagemProdutos = repositorioProduto.Count();
+
+            List<string> labels = new();
+            List<int> data = new();
+            foreach (var categoria in ContagemPorCategoria)
+            {
+                if (categoria.Value == 0)
+                    continue;
+                labels.Add(categoria.Key.Nome.ToString());
+                data.Add(categoria.Value);
+            }
            
             var grafic = new Graphics(labels.Count, labels, data);
 
@@ -41,8 +55,5 @@ namespace HomeManager.Controllers
             //return JsonConvert.SerializeObject(grafic);
             return Ok(grafic);
         }
-
-
-
     }
 }
