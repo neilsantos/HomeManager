@@ -11,11 +11,12 @@
         padding: 0.2rem;
         border: 1px solid transparent;
         border-radius: 0.25rem;
-
     }
-        .chart-info .icon{
+
+        .chart-info .icon {
             margin-right: 10px;
         }
+
 </style>
 @section scripts
     {
@@ -329,34 +330,36 @@
                                         </div>
                                         <!-- Prices per Category -->
                                         <div class="col-sm-6">
-                                            <div class="d-flex">
-                                                <p class="d-flex flex-column">
-                                                    <span>Price per Category</span>
-                                                    <span id="total-category-price" class="text-bold text-lg"></span>
-                                                </p>
-                                                <!-- some future notes that can be usefull
-                                                <p class="ml-auto d-flex flex-column text-right">
-                                                    <span class="text-success">
-                                                        <i class="fas fa-arrow-up"></i> 33.1%
+                                            <div >
+                                                <div class="d-flex">
+                                                    <p class="d-flex flex-column">
+                                                        <span>Price per Category</span>
+                                                        <span id="total-category-price" class="text-bold text-lg"></span>
+                                                    </p>
+                                                    <!-- some future notes that can be usefull
+                                                    <p class="ml-auto d-flex flex-column text-right">
+                                                        <span class="text-success">
+                                                            <i class="fas fa-arrow-up"></i> 33.1%
+                                                        </span>
+                                                        <span class="text-muted">Since last month</span>
+                                                    </p>-->
+                                                </div>
+
+                                                <div class="position-relative mb-4">
+                                                    <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                                                    <canvas id="price-per-category-graphic" height="257" style="display: block; width: 452px; height: 257px;" width="452" class="chartjs-render-monitor"></canvas>
+                                                </div>
+                                                <!-- some buttons that can be usefull in the future
+                                                <div class="d-flex flex-row justify-content-end">
+                                                    <span class="mr-2">
+                                                       <button type="button" class="btn btn-block btn-success btn-xs">Success</button>
                                                     </span>
-                                                    <span class="text-muted">Since last month</span>
-                                                </p>-->
-                                            </div>
+                                                    <span>
+                                                        <button type="button" class="btn btn-block btn-success btn-xs">Success</button>
+                                                    </span>
+                                                </div>-->
 
-                                            <div class="position-relative mb-4">
-                                                <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                                                <canvas id="price-per-category-graphic" height="257" style="display: block; width: 452px; height: 257px;" width="452" class="chartjs-render-monitor"></canvas>
                                             </div>
-                                            <!-- some buttons that can be usefull in the future
-                                            <div class="d-flex flex-row justify-content-end">
-                                                <span class="mr-2">
-                                                   <button type="button" class="btn btn-block btn-success btn-xs">Success</button>
-                                                </span>
-                                                <span>
-                                                    <button type="button" class="btn btn-block btn-success btn-xs">Success</button>
-                                                </span>
-                                            </div>-->
-
                                         </div>
                                     </div>
                                 </div>
@@ -415,6 +418,7 @@
                             <!--TAB2-->
                             <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
                                 <div>
+
                                     <div class="row mb-2">
                                         <div class="chart-info">
                                             <span class="ml-2 mr-1"><i class="icon fa-solid fa-circle-info"></i>This chart brings only itens that is not empty.</span>

@@ -9,13 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace Apresentacao.Controllers
 {
     public class PatrimonyController : Controller
-    {
-        public IActionResult Index()
+    {   
+
+        public IActionResult Index([FromServices] Context context)
         {
             RepositorioProduto repositorioProduto = new();
-            var allProducts = repositorioProduto.Ler().ToList();
+            var allProducts = repositorioProduto.GetFullProducts();
+
+            
 
             List<Products> products = new();
+            
             foreach (var product in allProducts)
             {
                 products.Add(new(product.Nome, product.Marca.Nome, product.Categoria.Nome,product.Valor.ToString()));
@@ -60,12 +64,12 @@ namespace Apresentacao.Controllers
         //C-UD
         // -_---_--_-____-_--_---_---[CREATE]____--__--_-_--_-____--__-_--___--_
         [HttpPost]
-        public async Task<IActionResult> NewBrand([FromServices] Context contexto, [FromBody] Marca marca)
+        public async Task<IActionResult> NewBrand([FromServices] Context context, [FromBody] Marca marca)
         {
             try
             {
-                await contexto.Marcas.AddAsync(marca);
-                await contexto.SaveChangesAsync();
+                await context.Marcas.AddAsync(marca);
+                await context.SaveChangesAsync();
                 return Ok();
 
             }
@@ -73,12 +77,12 @@ namespace Apresentacao.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> NewCategory([FromServices] Context contexto, [FromBody] Categoria categoria)
+        public async Task<IActionResult> NewCategory([FromServices] Context context, [FromBody] Categoria categoria)
         {
             try
             {
-                await contexto.Categorias.AddAsync(categoria);
-                await contexto.SaveChangesAsync();
+                await context.Categorias.AddAsync(categoria);
+                await context.SaveChangesAsync();
                 return Ok();
 
             }
@@ -86,16 +90,16 @@ namespace Apresentacao.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> NewProduct([FromServices] Context contexto, [FromBody] NewProduct product)
+        public async Task<IActionResult> NewProduct([FromServices] Context context, [FromBody] NewProduct product)
         {
-            var category = contexto.Categorias.Find(product.CategoryId);
-            var brand = contexto.Marcas.Find(product.BrandId);
+            var category = context.Categorias.Find(product.CategoryId);
+            var brand = context.Marcas.Find(product.BrandId);
             var price = double.Parse(product.Price);
             Produto produto = new(product.Name, product.Model, category, brand, price);
             try
             {
-                await contexto.Produtos.AddAsync(produto);
-                await contexto.SaveChangesAsync();
+                await context.Produtos.AddAsync(produto);
+                await context.SaveChangesAsync();
                 return Ok();
 
             }
