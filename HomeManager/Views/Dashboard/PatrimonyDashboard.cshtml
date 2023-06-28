@@ -2,8 +2,23 @@
     ViewData["Title"] = "Patrimony";
     ViewData["PageHeader"] = "Patrimony Dashboard";
 }
+<style>
+    .chart-info {
+        color: #0e0e0e;
+        background-color: #f1f1f1;
+        border-color: #000000;
+        position: relative;
+        padding: 0.2rem;
+        border: 1px solid transparent;
+        border-radius: 0.25rem;
+
+    }
+        .chart-info .icon{
+            margin-right: 10px;
+        }
+</style>
 @section scripts
-{
+    {
     <script>
         $(document).ready(function () {
             $("#dashboard").attr("class", "nav-item menu-open");
@@ -51,12 +66,12 @@
                 toastr.error('Error on loading count per category graphic')
             }
         })
-    </script>
+    </script> <!--COUNT PER CATEGORY-->
 
     <script>
-        
+        //PricePerCategory
         $.ajax({
-            url: './PricePerCategory',
+            url: './TotalPricePerCategory',
             type: 'GET',
             contentType: 'application/json; charset=utf-8',
             traditional: true,
@@ -65,6 +80,8 @@
                 let total = 0;
                 $.each(response.data, function () { total += parseFloat(this) || 0; });
                 $('#total-category-price').html('Total R$ ' + new Intl.NumberFormat('en-DE').format(total))
+
+                console.log(response.data)
 
                 var ticksStyle = {
                     fontColor: '#495057',
@@ -142,13 +159,12 @@
                 toastr.error('Error on loading price per category graphic')
             }
         })
-    </script>
-
+    </script> <!--PRICE PER CATEGORY-->
     @*-_---_--_-____-_--_---_---[BRAND CHARTS]____--__--_-_--_-____--__-_--___--_*@
     <script>
-        //CountPerCategory
+        //CountPerBrand
         $.ajax({
-            url: './CountPerCategory',
+            url: './CountPerBrand',
             type: 'GET',
             contentType: 'application/json; charset=utf-8',
             traditional: true,
@@ -184,7 +200,7 @@
 
     <script>
         $.ajax({
-            url: './PricePerCategory',
+            url: './TotalPricePerBrand',
             type: 'GET',
             contentType: 'application/json; charset=utf-8',
             traditional: true,
@@ -193,7 +209,6 @@
                 let total = 0;
                 $.each(response.data, function () { total += parseFloat(this) || 0; });
                 $('#total-brand-price').html('Total R$ ' + new Intl.NumberFormat('en-DE').format(total))
-                
 
                 var ticksStyle = {
                     fontColor: '#495057',
@@ -233,7 +248,6 @@
                         scales: {
                             yAxes: [{
                                 // display: false,
-
                                 gridLines: {
                                     display: true,
                                     lineWidth: '4px',
@@ -265,11 +279,10 @@
                         }
                     }
                 })
-
-            },
+            },//sucess
             error: function (request, status, error) {
                 toastr.error('Error on loading price per category graphic')
-            }
+            }//error
         })
     </script>
 
@@ -292,13 +305,20 @@
                             </li>
                         </ul>
                     </div>
+
                     <div class="card-body">
                         <div class="tab-content" id="custom-tabs-four-tabContent">
                             <!--TAB1-->
                             <div class="tab-pane fade active show" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
                                 <div class="mb-4">
+                                    <div class="row mb-2">
+                                        <div class="chart-info">
+                                            <span class="ml-2 mr-1"><i class="icon fa-solid fa-circle-info"></i>This chart brings only itens that is not empty.</span>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <!-- Category Count -->
+
                                         <div class="col-sm-6">
                                             <p class="d-flex flex-column">
                                                 <span>Category Count</span>
@@ -392,9 +412,14 @@
                                     </div>
                                 </div>
                             </div>
-                           <!--TAB2-->
+                            <!--TAB2-->
                             <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
                                 <div>
+                                    <div class="row mb-2">
+                                        <div class="chart-info">
+                                            <span class="ml-2 mr-1"><i class="icon fa-solid fa-circle-info"></i>This chart brings only itens that is not empty.</span>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <!-- Brand Count Section -->
                                         <div class="col-sm-6">
@@ -502,7 +527,7 @@
             <!--Left Side-->
             <div class="col-lg-6">
 
-            <!--Item 1 - ITENS -->
+                <!--Item 1 - ITENS -->
                 <div class="card">
                     <div class="card-header border-0">
                         <h3 class="card-title">Top 5 ítens</h3>
@@ -532,7 +557,7 @@
                                     <td>900,00</td>
                                     <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
                                 </tr>
-                                
+
                                 <tr>
                                     <td>Monitor 27' Curvo</td>
                                     <td>Eletrônico</td>
@@ -570,8 +595,6 @@
                 <!-- /.Item 1 - ITENS -->
             </div>
             <!-- /.Lado Esquerdo -->
-            
-            
             <!--Right Side-->
             <div class="col-lg-6">
 
@@ -640,7 +663,7 @@
         <!-- /.row -->
 
 
-       
+
     </div>
     <!-- /.container-fluid -->
 </div>

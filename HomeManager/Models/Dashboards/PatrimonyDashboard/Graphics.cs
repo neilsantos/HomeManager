@@ -3,12 +3,12 @@
     public class Graphics
     {
         public List<string> Labels { get; set; } = new();
-        public List<int> Data { get; set; } = new();
+        public List<double> Data { get; set; } = new();
         public List<string> BackGroundColors { get; set; } = new List<string>() { "#f56954", "#00a65a", "#f39c12", "#00c0ef", "#e7a612", "#7740c0", "#6ac971", "#18d2c0" };
 
 
 
-        public Graphics(int labelsCount, List<string> labels, List<int> data)
+        public Graphics(int labelsCount, List<string> labels, List<double> data)
         {
             Labels = labels;
             Data = data;
@@ -27,6 +27,7 @@
             }
 
         }
+        
     }
 
 }

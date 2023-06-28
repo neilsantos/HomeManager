@@ -101,9 +101,6 @@ namespace Apresentacao.Controllers
             }
             catch (Exception ex)
             {
-
-                Console.WriteLine("==============================================================\n\n\n\n");
-                Console.WriteLine(ex);
                 return BadRequest(ex.Message);
             }
         }
