@@ -1,17 +1,53 @@
 ﻿@using Apresentacao.Models.Patrimony.General
-@model Products
+@model List<Products>
 @{
     ViewData["PageHeader"] = "General";
     ViewData["Title"] = "Patrimony > " + ViewData["PageHeader"];
 }
 @section scripts
     {
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/plugins/jszip/jszip.min.js"></script>
+    <script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
     <script>
         $(document).ready(function () {
             $("#patrimony").attr("class", "nav-item menu-open");
             $("#patrimony-link").attr("class", "nav-link active");
             $("#general").attr("class", "nav-link active");
         })
+    </script>
+
+    <script>
+        $(function () {
+            $("#all-products").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "pageLength": 10,
+                "autoWidth": true,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+                "columns": [
+                    { "width": "50%" },
+                    { "width": "15%" },
+                    { "width": "15%" },
+                    { "width": "10%" },
+                    { "width": "10%" }]
+
+            }).buttons().container().appendTo('#all-products_wrapper .col-md-6:eq(0)');
+            
+        });
     </script>
 
     <script>
@@ -40,7 +76,7 @@
         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-10">
-                <button id="submit" class="btn btn-success float-right" onclick="location.href='@Url.Action("NewProduct", "Patrimony")'"> <i class="fas fa-plus"></i> Novo Produto</button>
+                <button class="btn btn-success float-right" onclick="location.href='@Url.Action("NewProduct", "Patrimony")'"> <i class="fas fa-plus"></i> New Product</button>
             </div>
         </div>
         </div>
@@ -51,52 +87,41 @@
                     <div class="card-header d-flex p-0">
                         <ul class="nav nav-pills mr-auto p-2">
                             @*<li class="nav-item"><a class="nav-link mr-3" href="#" onclick="changeIconView()"><i id="change-view-icon" class="fas fa-bars"></i></a></li>*@
-                            <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Todos</a></li>
-                            @{
+                            <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">All Products</a></li>
+                           @* @{
                                 for (int i = 2; i < 5; i++)
                                 {
                                     <li class="nav-item"><a class="nav-link" href="#tab_@i" data-toggle="tab">@i</a></li>
                                 }
-                            }
+                            }*@
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
                             <!--TAB ALL-->
                             <div class="tab-pane active" id="tab_1">
-
                             <div class="row">
-                                <div class="table-responsive p-0" style="height: 700px;">
-                                    <table class="table table-head-fixed text-nowrap">
+                                <div class="table-responsive p-0">
+                                    <table id="all-products" class="table table-sm table-hover table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Nome1</th>
-                                                <th>Marca</th>
-                                                <th>Modelo</th>
-                                                <th>Valor</th>
+                                                <th>Name</th>
+                                                <th>Brand</th>
+                                                <th>Model</th>
+                                                <th>Price</th>
                                                 <th>NFe</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @{
-                                                foreach (var item in Model.)
+                                                foreach (var item in Model)
                                                 {
                                                     <tr>
-                                                        <td>Monitor LG</td>
-                                                        <td>Samsung</td>
-                                                        <td>F390 Series C27F390FH</td>
-                                                        <td>1.029,00</td>
-                                                        <td><a class="nav-link">NFe <span class="float-right badge bg-danger">VISUALIZAR</span></a></td>
-                                                    </tr>
-                                                }
-                                                for (int i = 0; i < 20; i++)
-                                                {
-                                                    <tr>
-                                                        <td>Monitor LG</td>
-                                                        <td>Samsung</td>
-                                                        <td>F390 Series C27F390FH</td>
-                                                        <td>1.029,00</td>
-                                                        <td><a class="nav-link">NFe <span class="float-right badge bg-danger">VISUALIZAR</span></a></td>
+                                                        <td>@item.Name</td>
+                                                        <td>@item.Brand</td>
+                                                        <td>@item.Model</td>
+                                                        <td>@item.Price</td>
+                                                        <td><a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
                                                     </tr>
                                                 }
                                             }

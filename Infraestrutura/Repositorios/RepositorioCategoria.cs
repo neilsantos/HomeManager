@@ -12,7 +12,7 @@ public class RepositorioCategoria : Repositorio<Categoria>, IRepositorioCategori
     }
     public IDictionary<Categoria, int> ContagemProdutoPorCategoria()
     {
-        return _context.Categorias.Select(x => new { Categoria = x, Total = x.Produtos.Count() }).ToDictionary(x => x.Categoria, x => x.Total);
+        return _context.Categorias.Select(x => new { Categoria = x, Total = x.Produtos.Count() }).OrderByDescending(x => x.Total).ToDictionary(x => x.Categoria, x => x.Total);
     }
     public IDictionary<Categoria, double> PricePerCategory()
     {

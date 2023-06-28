@@ -1,5 +1,5 @@
 ﻿using Apresentacao.Models.Patrimony.NewProduct;
-using Apresentacao.Models.Patrimony.Products;
+using Apresentacao.Models.Patrimony.General;
 using Apresentacao.Models.Patrimony.Settings;
 using Dominio.Entidades;
 using Infraestrutura;
@@ -16,15 +16,11 @@ namespace Apresentacao.Controllers
             RepositorioProduto repositorioProduto = new();
             var allProducts = repositorioProduto.GetFullProducts();
 
-            
-
             List<Products> products = new();
-            
-            foreach (var product in allProducts)
+            foreach (var p in allProducts)
             {
-                products.Add(new(product.Nome, product.Marca.Nome, product.Categoria.Nome,product.Valor.ToString()));
+                products.Add(new(p.Nome, p.Marca.Nome, p.Categoria.Nome, p.Valor));
             }
-
             return View(products);
         }
 
@@ -60,7 +56,6 @@ namespace Apresentacao.Controllers
             return View();
         }
 
-
         //C-UD
         // -_---_--_-____-_--_---_---[CREATE]____--__--_-_--_-____--__-_--___--_
         [HttpPost]
@@ -91,11 +86,15 @@ namespace Apresentacao.Controllers
 
         [HttpPost]
         public async Task<IActionResult> NewProduct([FromServices] Context context, [FromBody] NewProduct product)
-        {
+        {   
+            RepositorioProduto repositorioProduto = new();
+
             var category = context.Categorias.Find(product.CategoryId);
             var brand = context.Marcas.Find(product.BrandId);
             var price = double.Parse(product.Price);
+            
             Produto produto = new(product.Name, product.Model, category, brand, price);
+            
             try
             {
                 await context.Produtos.AddAsync(produto);

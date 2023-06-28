@@ -15,7 +15,7 @@ public class RepositorioMarca : Repositorio<Marca>, IRepositorioMarca
     }
     public IDictionary<Marca, int> ContagemProdutoPorMarca()
     {
-        return _context.Marcas.Select(x => new { Marca = x, Total = x.Produtos.Count() }).ToDictionary(x => x.Marca, x => x.Total);
+        return _context.Marcas.Select(x => new { Marca = x, Total = x.Produtos.Count() }).OrderByDescending(x => x.Total).ToDictionary(x => x.Marca, x => x.Total);
     }
     public IDictionary<Marca, double> PricesPerBrands()
     {

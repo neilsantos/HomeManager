@@ -20,7 +20,17 @@ public class Repositorio<T> : IRepositorio<T> where T : EntidadeBase
 
     public T Adicionar(T item)
     {
-        _context.Set<T>().Add(item);
+        try
+        {
+            _context.Set<T>().Add(item);
+            _context.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
+        
         return item;
     }
     public void Atualizar(T item)

@@ -15,7 +15,7 @@ namespace Apresentacao.Models.Patrimony.Settings
                 ContagemMarcas.Add(new MarcaModel
                 {
                     Nome = marca.Key.Nome,
-                    Percentual = totalProdutos != 0 ? marca.Value * 100 / totalProdutos : 52
+                    Percentual = totalProdutos != 0 ? marca.Value * 100 / totalProdutos : 0
                 });
             }
             foreach (var categoria in contagemCategorias)
@@ -23,7 +23,7 @@ namespace Apresentacao.Models.Patrimony.Settings
                 ContagemCategorias.Add(new CategoriaModel
                 {
                     Nome = categoria.Key.Nome,
-                    Percentual = totalProdutos != 0 ? categoria.Value * 100 / totalProdutos : 52
+                    Percentual = totalProdutos != 0 ? categoria.Value * 100 / totalProdutos : 0
                 });
             }
         }
