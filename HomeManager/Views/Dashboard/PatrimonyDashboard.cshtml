@@ -13,9 +13,9 @@
         border-radius: 0.25rem;
     }
 
-        .chart-info .icon {
-            margin-right: 10px;
-        }
+    .chart-info .icon {
+        margin-right: 10px;
+    }
 
 </style>
 @section scripts
@@ -33,7 +33,27 @@
 
     @*-_---_--_-____-_--_---_---[CATEGORY CHARTS]____--__--_-_--_-____--__-_--___--_*@
     <script>
-       
+        $.ajax({
+            url: './TopFiveCategories',
+            type: 'GET',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (response) {
+
+                for(i = 1; i < response.length+1; i++)
+                {
+                    $('#name-top-' + i).html(response[i-1].name)
+                    $('#price-total-top-' + i).html(response[i - 1].price)
+                    $('#percentage-top-' + i).html(response[i - 1].percent + '%')
+                }
+
+            },
+            error: function (request, status, error) {
+                toastr.error('Error on loading count per category graphic')
+            }
+        })
+        
+        
     </script>
     <script>
         //CountPerCategory
@@ -43,10 +63,10 @@
             contentType: 'application/json; charset=utf-8',
             traditional: true,
             success: function (response) {
-
                 let total = 0;
                 $.each(response.data, function () { total += this });
                 $('#total-category-count').html(total + ' products in total.')
+                $('#name-category-count').html('Category Count')
 
                 var graphic_1 = $('#contagem-categoria').get(0).getContext('2d')
                 var graphic_1_data = {
@@ -58,19 +78,19 @@
                         }
                     ]
                 }
-                var donutOptions = {  }
+                var donutOptions = {}
                 new Chart(graphic_1, {
                     type: 'doughnut',
                     data: graphic_1_data,
                     options: {
                         maintainAspectRatio: false,
                         responsive: true,
-                        onClick: (e) => {
-                            console.log(e)
-                        }
+                        //onClick: (e) => {
+                        //    console.log(e)
+                        //}
                     }
                 })
-               
+
             },
             error: function (request, status, error) {
                 toastr.error('Error on loading count per category graphic')
@@ -80,6 +100,7 @@
 
     <script>
         //PricePerCategory
+        $('#price-category-animation').attr('style', 'display:block');
         $.ajax({
             url: './TotalPricePerCategory',
             type: 'GET',
@@ -90,8 +111,9 @@
                 let total = 0;
                 $.each(response.data, function () { total += parseFloat(this) || 0; });
                 $('#total-category-price').html('Total R$ ' + new Intl.NumberFormat('en-DE').format(total))
+                $('#name-category-price').html('Price per Category')
 
-                console.log(response.data)
+                
 
                 var ticksStyle = {
                     fontColor: '#495057',
@@ -163,12 +185,17 @@
                         }
                     }
                 })
+                $('#price-category-animation').attr('style', 'display:none');
+
+
 
             },
             error: function (request, status, error) {
                 toastr.error('Error on loading price per category graphic')
             }
+
         })
+
     </script> <!--PRICE PER CATEGORY-->
     @*-_---_--_-____-_--_---_---[BRAND CHARTS]____--__--_-_--_-____--__-_--___--_*@
     <script>
@@ -320,29 +347,35 @@
                         <div class="tab-content" id="custom-tabs-four-tabContent">
                             <!--TAB1-->
                             <div class="tab-pane fade active show" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+
                                 <div class="mb-4">
                                     <div class="row mb-2">
                                         <div class="chart-info">
                                             <span class="ml-2 mr-1"><i class="icon fa-solid fa-circle-info"></i>This chart brings only itens that is not empty.</span>
                                         </div>
                                     </div>
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <div id="price-category-animation" class="spinner-border " role="status" style="display:none">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <!-- Category Count -->
-
                                         <div class="col-sm-6">
                                             <p class="d-flex flex-column">
-                                                <span>Category Count</span>
+                                                <span id="name-category-count"></span>
                                                 <span id="total-category-count" class="text-bold text-lg "></span>
                                             </p>
                                             <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                                             <canvas id="contagem-categoria" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 377px;" width="377" height="250" class="chartjs-render-monitor"></canvas>
                                         </div>
+
                                         <!-- Prices per Category -->
                                         <div class="col-sm-6">
-                                            <div >
+                                            <div>
                                                 <div class="d-flex">
                                                     <p class="d-flex flex-column">
-                                                        <span>Price per Category</span>
+                                                        <span id="name-category-price"></span>
                                                         <span id="total-category-price" class="text-bold text-lg"></span>
                                                     </p>
                                                     <!-- some future notes that can be usefull
@@ -353,7 +386,6 @@
                                                         <span class="text-muted">Since last month</span>
                                                     </p>-->
                                                 </div>
-
                                                 <div class="position-relative mb-4">
                                                     <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                                                     <canvas id="price-per-category-graphic" height="257" style="display: block; width: 452px; height: 257px;" width="452" class="chartjs-render-monitor"></canvas>
@@ -369,50 +401,52 @@
                                                 </div>-->
 
                                             </div>
+
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="row card-footer">
                                     <div class="col-sm-2 col-6">
                                         <div class="description-block border-right">
-                                            <span class="description-percentage text-success"><i class="fas fa-percentage fa-sm"></i> 37%</span>
-                                            <h5 class="description-header">R$ 15.207,00</h5>
-                                            <span class="description-text text-bold text-sm text-muted">Eletrônico</span>
+                                            <span id="percentage-top-1" class="description-percentage text-success">-</span>
+                                            <h5 id="price-total-top-1" class="description-header">-</h5>
+                                            <span id="name-top-1" class="description-text text-bold text-sm text-muted">-</span>
                                         </div>
 
                                     </div>
                                     <div class="col-sm-2 col-6">
                                         <div class="description-block border-right">
-                                            <span class="description-percentage text-success"><i class="fas fa-percentage fa-sm"></i> 10%</span>
-                                            <h5 class="description-header">R$ 4.270,00</h5>
-                                            <span class="description-text text-bold text-sm text-muted">Móveis</span>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-sm-2 col-6">
-                                        <div class="description-block border-right">
-                                            <span class="description-percentage text-warning"><i class="fas fa-percentage fa-sm"></i> 16%</span>
-                                            <h5 class="description-header">R$ 6.470,00</h5>
-                                            <span class="description-text text-bold text-sm text-muted">Eletrodoméstico</span>
+                                            <span id="percentage-top-2" class="description-percentage text-success">-</span>
+                                            <h5 id="price-total-top-2" class="description-header">-</h5>
+                                            <span id="name-top-2" class="description-text text-bold text-sm text-muted">-</span>
                                         </div>
 
                                     </div>
 
                                     <div class="col-sm-2 col-6">
                                         <div class="description-block border-right">
-                                            <span class="description-percentage text-success"><i class="fas fa-percentage fa-sm"></i> 36%</span>
-                                            <h5 class="description-header">R$ 15.000,00</h5>
-                                            <span class="description-text text-bold text-sm text-muted">Colecionáveis</span>
+                                            <span id="percentage-top-3" class="description-percentage text-warning">-</span>
+                                            <h5 id="price-total-top-3" class="description-header">-</h5>
+                                            <span id="name-top-3" class="description-text text-bold text-sm text-muted">-</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-2 col-6">
+                                        <div class="description-block border-right">
+                                            <span id="percentage-top-4" class="description-percentage text-success">-</span>
+                                            <h5 id="price-total-top-4" class="description-header">-</h5>
+                                            <span id="name-top-4" class="description-text text-bold text-sm text-muted">-</span>
                                         </div>
 
                                     </div>
 
                                     <div class="col-sm-2 col-6">
                                         <div class="description-block">
-                                            <span class="description-percentage text-success"><i class="fas fa-percentage fa-sm"></i> 100%</span>
-                                            <h5 class="description-header">R$ 40.947,00</h5>
-                                            <span class="description-text text-bold text-sm text-muted">TOTAL</span>
+                                            <span id="percentage-top-5" class="description-percentage text-success">-</span>
+                                            <h5 id="price-total-top-5" class="description-header">-</h5>
+                                            <span id="name-top-5" class="description-text text-bold text-sm text-muted">-</span>
                                         </div>
 
                                     </div>
@@ -479,7 +513,7 @@
                                 <div class="row card-footer">
                                     <div class="col-sm-2 col-6">
                                         <div class="description-block border-right">
-                                            <span class="description-percentage text-success"><i class="fas fa-percentage fa-sm"></i> 37%</span>
+                                            <span class="description-percentage text-success"> 37%</span>
                                             <h5 class="description-header">R$ 15.207,00</h5>
                                             <span class="description-text text-bold text-lg text-muted">Eletrônico</span>
                                         </div>
@@ -487,7 +521,7 @@
                                     </div>
                                     <div class="col-sm-2 col-6">
                                         <div class="description-block border-right">
-                                            <span class="description-percentage text-success"><i class="fas fa-percentage fa-sm"></i> 10%</span>
+                                            <span class="description-percentage text-success"> 10%</span>
                                             <h5 class="description-header">R$ 4.270,00</h5>
                                             <span class="description-text text-bold text-lg text-muted">Móveis</span>
                                         </div>
@@ -496,7 +530,7 @@
 
                                     <div class="col-sm-2 col-6">
                                         <div class="description-block border-right">
-                                            <span class="description-percentage text-warning"><i class="fas fa-percentage fa-sm"></i> 16%</span>
+                                            <span class="description-percentage text-warning"> 16%</span>
                                             <h5 class="description-header">R$ 6.470,00</h5>
                                             <span class="description-text text-bold text-lg text-muted">Eletrodoméstico</span>
                                         </div>
@@ -505,7 +539,7 @@
 
                                     <div class="col-sm-2 col-6">
                                         <div class="description-block border-right">
-                                            <span class="description-percentage text-success"><i class="fas fa-percentage fa-sm"></i> 36%</span>
+                                            <span class="description-percentage text-success"> 36%</span>
                                             <h5 class="description-header">R$ 15.000,00</h5>
                                             <span class="description-text text-bold text-lg text-muted">Colecionáveis</span>
                                         </div>
@@ -514,7 +548,7 @@
 
                                     <div class="col-sm-2 col-6">
                                         <div class="description-block">
-                                            <span class="description-percentage text-success"><i class="fas fa-percentage fa-sm"></i> 100%</span>
+                                            <span class="description-percentage text-success"> 100%</span>
                                             <h5 class="description-header">R$ 40.947,00</h5>
                                             <span class="description-text text-bold text-lg text-muted">TOTAL</span>
                                         </div>

@@ -39,11 +39,12 @@
                 "autoWidth": true,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
                 "columns": [
-                    { "width": "50%" },
+                    { "width": "43%" },
                     { "width": "15%" },
                     { "width": "15%" },
                     { "width": "10%" },
-                    { "width": "10%" }]
+                    { "width": "10%" },
+                    { "width": "7%" }]
 
             }).buttons().container().appendTo('#all-products_wrapper .col-md-6:eq(0)');
             
@@ -110,6 +111,7 @@
                                                 <th>Model</th>
                                                 <th>Price</th>
                                                 <th>NFe</th>
+                                                <th>Edit</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -122,6 +124,7 @@
                                                         <td>@item.Model</td>
                                                         <td>@item.Price</td>
                                                         <td><a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+                                                        <td><a href="#"><i class="fa-solid fa-pen-to-square"></i></a></td>
                                                     </tr>
                                                 }
                                             }

@@ -12,7 +12,7 @@ namespace HomeManager.Controllers
             return View();
         }
         public IActionResult PatrimonyDashboard()
-        {   
+        {
             return View();
         }
         public IActionResult FinancialDashboard()
@@ -39,7 +39,7 @@ namespace HomeManager.Controllers
                 labels.Add(categoria.Key.Nome.ToString());
                 data.Add(categoria.Value);
             }
-           
+
             var grafic = new Graphics(labels.Count, labels, data);
 
             //return JsonConvert.SerializeObject(grafic);
@@ -59,7 +59,7 @@ namespace HomeManager.Controllers
                 if (category.Value == 0)
                     continue;
                 labels.Add(category.Key.Nome.ToString());
-                data.Add(category.Value);
+                data.Add(Math.Round(category.Value,2));
             }
 
             var grafic = new Graphics(labels.Count, labels, data);
@@ -103,13 +103,45 @@ namespace HomeManager.Controllers
                 if (brand.Value == 0)
                     continue;
                 labels.Add(brand.Key.Nome.ToString());
-                data.Add(brand.Value);
+                data.Add(Math.Round(brand.Value, 2));
             }
 
             var grafic = new Graphics(labels.Count, labels, data);
 
             //return JsonConvert.SerializeObject(grafic);
             return Ok(grafic);
+        }
+        public IActionResult TopFiveBrands()
+        {
+            RepositorioMarca repositorioMarca = new();
+
+            var topFive = repositorioMarca.TopFiveBrands();
+
+            var total = topFive.Values.Sum();
+
+            List<TopFive> topfive = new();
+            foreach (var item in topFive)
+            {
+                topfive.Add(new(item.Key.Nome,item.Value, total));
+            }
+
+            return Ok(topfive);
+        }
+        public IActionResult TopFiveCategories()
+        {
+            RepositorioCategoria repositorioCategoria = new();
+
+            var topFive = repositorioCategoria.TopFiveCategories();
+
+            var total = topFive.Values.Sum();
+
+            List<TopFive> topfive = new();
+            foreach (var item in topFive)
+            {
+                topfive.Add(new(item.Key.Nome, Math.Round(item.Value, 2) , Math.Round(total)));
+            }
+
+            return Ok(topfive);
         }
     }
 }
