@@ -16,7 +16,7 @@ public class RepositorioCategoria : Repositorio<Categoria>, IRepositorioCategori
     }
     public IDictionary<Categoria, double> PricePerCategory()
     {
-        return _context.Categorias.Select(c => new { CategoryName = c, TotalPrice = c.Produtos.Sum(p => p.Valor) }).ToDictionary(x => x.CategoryName, x => x.TotalPrice);
+        return _context.Categorias.Select(c => new { CategoryName = c, TotalPrice = c.Produtos.Sum(p => p.Valor) }).OrderByDescending(x => x.TotalPrice).ToDictionary(x => x.CategoryName, x => x.TotalPrice);
     }
     public IDictionary<Categoria, double> TopFiveCategories()
     {

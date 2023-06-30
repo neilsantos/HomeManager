@@ -3,7 +3,7 @@
 namespace Apresentacao.Models.Patrimony.NewProduct
 {
     public class NewProduct
-    {
+    {   
         public string Name { get; set; }
         public string Model { get; set; }
         public string Price { get; set; }

@@ -19,7 +19,7 @@ public class RepositorioMarca : Repositorio<Marca>, IRepositorioMarca
     }
     public IDictionary<Marca, double> PricesPerBrands()
     {
-        return _context.Marcas.Select(b => new{BrandName = b, TotalPrice = b.Produtos.Sum(p => p.Valor)}).ToDictionary(x => x.BrandName, x => x.TotalPrice);
+        return _context.Marcas.Select(b => new{BrandName = b, TotalPrice = b.Produtos.Sum(p => p.Valor)}).OrderByDescending(x => x.TotalPrice).ToDictionary(x => x.BrandName, x => x.TotalPrice);
     } 
     public IDictionary<Marca, double> TopFiveBrands()
     {

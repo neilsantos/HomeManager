@@ -5,12 +5,13 @@ using Dominio.Entidades;
 using Infraestrutura;
 using Infraestrutura.Repositorios;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Apresentacao.Controllers
 {
     public class PatrimonyController : Controller
-    {   
-
+    {
+        // -_---_--_-____-_--_---_---[READ]____--__--_-_--_-____--__-_--___--_
         public IActionResult Index([FromServices] Context context)
         {
             RepositorioProduto repositorioProduto = new();
@@ -19,7 +20,7 @@ namespace Apresentacao.Controllers
             List<Products> products = new();
             foreach (var p in allProducts)
             {
-                products.Add(new(p.Nome, p.Marca.Nome, p.Categoria.Nome, p.Valor));
+                products.Add(new(p.Id,p.Nome,p.Modelo, p.Marca.Nome, p.Categoria.Nome, p.Valor,p.NumeroDeSerie));
             }
             return View(products);
         }
@@ -37,6 +38,17 @@ namespace Apresentacao.Controllers
             PatrimonySettings patrimonySettings = new(ContagemPorMarca, ContagemPorCategoria, ContagemProdutos);
 
             return View(patrimonySettings);
+        } 
+        public IActionResult BrandsNCategories()
+        {
+            RepositorioCategoria categoryRepository = new();
+            RepositorioMarca brandRepository = new();
+
+            var categories = categoryRepository.Ler().ToList();
+            var brands = brandRepository.Ler().ToList();
+
+            BrandsAndCategories product = new(brands, categories);
+            return Ok(product);
         }
 
         public IActionResult NewProduct()
@@ -57,6 +69,7 @@ namespace Apresentacao.Controllers
         }
 
         //C-UD
+        
         // -_---_--_-____-_--_---_---[CREATE]____--__--_-_--_-____--__-_--___--_
         [HttpPost]
         public async Task<IActionResult> NewBrand([FromServices] Context context, [FromBody] Marca marca)
@@ -87,8 +100,6 @@ namespace Apresentacao.Controllers
         [HttpPost]
         public async Task<IActionResult> NewProduct([FromServices] Context context, [FromBody] NewProduct product)
         {   
-            RepositorioProduto repositorioProduto = new();
-
             var category = context.Categorias.Find(product.CategoryId);
             var brand = context.Marcas.Find(product.BrandId);
             var price = double.Parse(product.Price);
@@ -117,11 +128,36 @@ namespace Apresentacao.Controllers
         {
             return View();
         }
-        public IActionResult UpdateProduct()
-        {
-            return View();
-        }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateProduct([FromServices] Context context, [FromBody] NewProduct product, [FromRoute] int id)
+        {
+            RepositorioProduto repositorioProduto = new();
+
+            Produto? p = context.Produtos.Find(id);
+            
+            if(p == null)
+                return NotFound();
+
+            var category = context.Categorias.Find(product.CategoryId);
+            var brand = context.Marcas.Find(product.BrandId);
+            var price = double.Parse(product.Price);
+
+            p.Nome = product.Name;
+            p.Modelo = product.Model;
+            p.Marca = brand;
+            p.Categoria = category;
+            p.Valor = price;
+
+            try
+            {
+                context.Produtos.Update(p);
+                await context.SaveChangesAsync();
+                return Ok();
+
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+        }
 
         // -_---_--_-____-_--_---_---[DELETE]____--__--_-_--_-____--__-_--___--_
         public IActionResult DeleteBrand()

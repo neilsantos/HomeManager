@@ -23,6 +23,7 @@ namespace HomeManager.Controllers
 
 
         //-_---_--_-____-_--_---_---[CHARTS]____--__--_-_--_-____--__-_--___--_
+        
         // # CATEGORY
         public IActionResult CountPerCategory()
         {
@@ -45,7 +46,6 @@ namespace HomeManager.Controllers
             //return JsonConvert.SerializeObject(grafic);
             return Ok(grafic);
         }
-
         public IActionResult TotalPricePerCategory()
         {
             RepositorioCategoria repositorioCategoria = new();
@@ -66,6 +66,22 @@ namespace HomeManager.Controllers
 
             //return JsonConvert.SerializeObject(grafic);
             return Ok(grafic);
+        }
+        public IActionResult TopFiveCategories()
+        {
+            RepositorioCategoria repositorioCategoria = new();
+
+            var topFive = repositorioCategoria.TopFiveCategories();
+
+            var total = topFive.Values.Sum();
+
+            List<TopFive> topfive = new();
+            foreach (var item in topFive)
+            {
+                topfive.Add(new(item.Key.Nome, Math.Round(item.Value, 2), Math.Round(total)));
+            }
+
+            return Ok(topfive);
         }
 
         // # BRANDS
@@ -122,26 +138,11 @@ namespace HomeManager.Controllers
             List<TopFive> topfive = new();
             foreach (var item in topFive)
             {
-                topfive.Add(new(item.Key.Nome,item.Value, total));
+                topfive.Add(new(item.Key.Nome, Math.Round(item.Value, 2), Math.Round(total)));
             }
 
             return Ok(topfive);
         }
-        public IActionResult TopFiveCategories()
-        {
-            RepositorioCategoria repositorioCategoria = new();
-
-            var topFive = repositorioCategoria.TopFiveCategories();
-
-            var total = topFive.Values.Sum();
-
-            List<TopFive> topfive = new();
-            foreach (var item in topFive)
-            {
-                topfive.Add(new(item.Key.Nome, Math.Round(item.Value, 2) , Math.Round(total)));
-            }
-
-            return Ok(topfive);
-        }
+        
     }
 }
