@@ -27,9 +27,5 @@ public class RepositorioMarca : Repositorio<Marca>, IRepositorioMarca
             .Take(5).ToDictionary(x => x.BrandName, x => x.TotalPrice);
         
     }
-
-
-
-
 }
 

@@ -11,16 +11,21 @@
 
 @section scripts
     {
+  
 
     <script>
+        //Sidebar Behavior
         $(document).ready(function () {
             $("#patrimony").attr("class", "nav-item menu-open");
             $("#patrimony-link").attr("class", "nav-link active");
             $("#settings").attr("class", "nav-link active");
         })
+       
     </script>
-    <script>
 
+
+    <script>
+        //-_---_--_-____-_--_---_---[CREATE CATEGORY]____--__--_-_--_-____--__-_--___--_*
 
         $(document).ready(function () {
             $('#btn-nova-categoria').click(function () {
@@ -30,17 +35,21 @@
             })
 
             $('#salvar-categoria').click(function () {
+                
                 let inputValue = $('#input-nova-categoria').val();
                 if (inputValue === '') {
-                    toastr.error('Filling is required to proceed!')
+                    Toast.fire({ icon: 'error', title: 'I cant save it like that' })
                     $('#input-nova-categoria').attr('class', 'form-control border border-danger')
                     setTimeout(function () {
                         $('#input-nova-categoria').attr('class', 'form-control')
                     }, 3000)
                     return;
                 }
+
+
                 let payload = { "Nome": inputValue }
-                $(this).html('<i class="fas fa-redo-alt fa-spin"></i>')
+                
+                $('#salvar-categoria').html('<i class="fas fa-redo-alt fa-spin"></i>')
                 $.ajax({
                     data: JSON.stringify(payload),
                     url: './NewCategory',
@@ -48,31 +57,19 @@
                     contentType: 'application/json; charset=utf-8',
                     traditional: true,
                     success: function (res) {
-                        toastr.success('Saved to Database!')
+                        Toast.fire({ icon: 'success', title: 'All good, go on!' })
                         window.setTimeout(function () { window.location.href = './Settings'; }, 2000)
-                        console.log("resposta:", res)
-                        //switch () {
-                        //    case 'success':
-                        //        toastr.success('Saved to Database!')
-                        //        window.setTimeout(function () { window.location.href = './'; }, 2000)
-                        //        break
-                        //    case 'error':
-                        //        toastr.error('Error, preset could not be saved!')
-                        //        break
-                        //    case 'equal':
-                        //        toastr.warning('There is already a preset registered with that name!')
-                        //        break
-                        //    default:
-                        //        toastr.error('Unexpected error')
-                        //}
+                        
                     }
                 })
-                $(this).html('<i class="fa-solid fa-check"></i>')
+                $(this).html('<i class="fa-solid fa-check"></i> Save')
             })
         })
     </script>
+
     <script>
-        //SALVAR MARCA
+        //-_---_--_-____-_--_---_---[CREATE BRAND]____--__--_-_--_-____--__-_--___--_*
+
         $(document).ready(function () {
             $('#btn-nova-marca').click(function () {
                 $('#nova-marca').attr('style', 'display:block');
@@ -82,7 +79,7 @@
             $('#salvar-marca').click(function () {
                 let inputValue = $('#input-nova-marca').val();
                 if (inputValue === '') {
-                    toastr.error('Filling is required to proceed!')
+                    Toast.fire({ icon: 'error', title: 'I cant save it like that!' })
                     $('#input-nova-marca').attr('class', 'form-control border border-danger')
                     setTimeout(function () {
                         $('#input-nova-marca').attr('class', 'form-control')
@@ -98,30 +95,18 @@
                     contentType: 'application/json; charset=utf-8',
                     traditional: true,
                     success: function (res) {
-                        toastr.success('Saved to Database!')
+                        
+                        Toast.fire({ icon: 'success', title: "All good, go on!" })
                         window.setTimeout(function () { window.location.href = './Settings'; }, 2000)
-                        console.log("resposta:", res)
-                        //switch () {
-                        //    case 'success':
-                        //        toastr.success('Saved to Database!')
-                        //        window.setTimeout(function () { window.location.href = './'; }, 2000)
-                        //        break
-                        //    case 'error':
-                        //        toastr.error('Error, preset could not be saved!')
-                        //        break
-                        //    case 'equal':
-                        //        toastr.warning('There is already a preset registered with that name!')
-                        //        break
-                        //    default:
-                        //        toastr.error('Unexpected error')
-                        //}
                     }
                 })
                 $(this).html('<i class="fa-solid fa-check"></i>')
             })
         })
     </script>
+
     <script>
+        //-_---_--_-____-_--_---_---[SHARED CANCEL BUTTTON]____--__--_-_--_-____--__-_--___--_*
         $('#btn-cancel-marca').click(function () {
             $('#nova-marca').attr('style', 'display:none')
             $('#btn-nova-marca').attr('style', 'display:block')
@@ -133,14 +118,123 @@
             $(this).attr('style', 'display:none')
         })
     </script>
+
+
+
+    <script>
+    //-_---_--_-____-_--_---_---[EDIT BRAND]____--__--_-_--_-____--__-_--___--_
+        let url = null;
+        function EditBrand(id) {
+
+            let td = $('#brand-row-' + id).find("td:eq(1)")
+            let name = td.text()
+
+            $('#modal-name').val(name)
+            $('#modal-name').attr('data-content','brand')
+            $('#modal-name').attr('data',id)
+            $('#modal-title').html('<i class="fa-regular fa-pen-to-square"></i> Update Brand')
+            
+
+            $('#edit-modal').modal('toggle');
+            url = './UpdateBrand/' + id;
+        }
+</script>
+    <script>
+        function EditCategory(id) {
+
+            //console.log(id)
+            //console.log($('#brand-row-' + id).find("td:eq(1)").text())
+
+            let td = $('#category-row-' + id).find("td:eq(1)")
+            let name = td.text()
+
+            $('#modal-name').val(name)
+            $('#modal-name').attr('data-content', 'category')
+            $('#modal-name').attr('data', id)
+            $('#modal-title').html('<i class="fa-regular fa-pen-to-square"></i> Update Category')
+
+            $('#edit-modal').modal('toggle');
+            url = './UpdateCategory/' + id;
+        }
+    </script>
+    <script>
+        $('#update-product').click(function () {
+           
+            let destiny = $('#modal-name').attr('data-content')
+            console.log(destiny, url)
+
+            if (destiny === 'category' && url != null) {
+
+                let name = $('#modal-name').val()
+
+                let payload = { "Nome": name }
+
+
+                $(this).html('<i class="fas fa-redo-alt fa-spin"></i>')
+                $.ajax({
+                    data: JSON.stringify(payload),
+                    url: url,
+                    type: 'PUT',
+                    contentType: 'application/json; charset=utf-8',
+                    traditional: true,
+                    success: function (res) {
+                        $('#edit-modal').modal('toggle');
+                        Toast.fire({ icon: 'success', title: 'All good, go on!' })
+                        window.setTimeout(function () { window.location.href = './Settings'; }, 3000)
+                    }
+                })
+                $(this).html('<i class="fa-solid fa-check"></i> Update')
+
+            }
+            if (destiny === 'brand' && url != null) {
+
+                let name = $('#modal-name').val()
+
+                let payload = { "Nome": name }
+
+                $(this).html('<i class="fas fa-redo-alt fa-spin"></i>')
+                $.ajax({
+                    data: JSON.stringify(payload),
+                    url: url,
+                    type: 'PUT',
+                    contentType: 'application/json; charset=utf-8',
+                    traditional: true,
+                    success: function (res) {
+                        $('#edit-modal').modal('toggle');
+                        Toast.fire({ icon: 'success', title: 'All good, go on!' })
+                        window.setTimeout(function () { window.location.href = './Settings'; }, 3000)
+                    }
+                })
+                $(this).html('<i class="fa-solid fa-check"></i> Update')
+            }
+        })
+        
+        $("#delete").click(function () {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+            })
+        })
+    </script>
     }
 
 <!-- Main content -->
-@*<section class="content">
-    <div class="container-fluid">*@
 <div class="row justify-content-center mt-3 pt-2">
-  <div class="col-md-10 flex-column center">
-        
+    <div class="col-md-10 flex-column center">
+
         <div class="row">
             <!--Marcas-->
             <div class="col-md-6">
@@ -160,13 +254,12 @@
                             }
                             else
                             {
-                                <table class="table table-sm">
+                                <table class="table table-sm table-hover ">
                                     <thead>
                                         <tr>
-                                            <th style="width: 10px">#</th>
-                                            <th>Itens</th>
-                                            <th>Produtos por marca</th>
-                                            <th style="width: 40px">%</th>
+                                            <th style="width:10px">#</th>
+                                            <th >Itens</th>
+                                            <th class="text-center">Produtos por marca</th>
                                             <th style="width: 15px"><i class="far fa-minus-square"></i></th>
                                         </tr>
                                     </thead>
@@ -175,16 +268,22 @@
                                             int i = 1;
                                             foreach (var item in Model.ContagemMarcas)
                                             {
-                                                <tr>
+                                                <tr id="brand-row-@item.Id">
                                                     <td>@i</td>
                                                     <td>@item.Nome</td>
                                                     <td>
-                                                        <div class=" mt-2 progress progress-xs">
-                                                            <div class="progress-bar progress-bar-danger" style="width: @item.Percentual%"></div>
-                                                        </div>
+                                                       <div class="row">
+                                                            <div class="col-sm-10">
+                                                                <div class="mt-2 progress progress-xs">
+                                                                    <div class="progress-bar progress-bar-danger" style="width:@item.Percentual%"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <div class=" text-bold text-nowrap">@item.Percentual%</div>
+                                                            </div>
+                                                       </div>
                                                     </td>
-                                                    <td><span class="badge bg-success">@item.Percentual%</span></td>
-                                                    <td><a href="#"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                                                    <td><a href="#" onclick="EditBrand('@item.Id')"><i class="fa-solid fa-pen-to-square"></i></a></td>
                                                 </tr>
                                                 i++;
                                             }
@@ -192,10 +291,8 @@
                                     </tbody>
                                 </table>
                             }
-
                         }
                     </div>
-
                     <div class="form-horizontal">
                         <div class="card-body" id="nova-marca" style="display:none;">
 
@@ -222,7 +319,7 @@
             </div> <!--/Marcas-->
             <!--Categorias-->
             <div class="col-md-6">
-               
+
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Categorias</h3>
@@ -241,13 +338,12 @@
                             }
                             else
                             {
-                                <table class="table table-sm table-head-fixed text-nowrap">
+                                <table class="table table-sm table-hover">
                                     <thead>
                                         <tr>
                                             <th style="width: 10px">#</th>
                                             <th>Itens</th>
-                                            <th>Produtos por marca</th>
-                                            <th style="width: 40px">%</th>
+                                            <th>% Products Per Category</th>
                                             <th style="width: 15px"><i class="far fa-minus-square"></i></th>
                                         </tr>
                                     </thead>
@@ -256,16 +352,22 @@
                                             int j = 1;
                                             foreach (var item in Model.ContagemCategorias)
                                             {
-                                                <tr data-content="@item.Nome">
+                                                <tr id="category-row-@item.Id">
                                                     <td>@j</td>
                                                     <td>@item.Nome</td>
                                                     <td>
-                                                        <div class=" mt-2 progress progress-xs">
-                                                            <div class="progress-bar progress-bar-danger" style="width: @item.Percentual%"></div>
+                                                        <div class="row">
+                                                            <div class="col-sm-10">
+                                                                <div class="mt-2 progress progress-xs">
+                                                                    <div class="progress-bar progress-bar-danger" style="width:@item.Percentual%"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <div class=" text-bold text-nowrap">@item.Percentual%</div>
+                                                            </div>
                                                         </div>
                                                     </td>
-                                                    <td><span class="badge bg-success">@item.Percentual%</span></td>
-                                                    <td><a href="#"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                                                    <td><a href="#" onclick="EditCategory('@item.Id')"><i class="fa-solid fa-pen-to-square"></i></a></td>
                                                 </tr>
                                                 j++;
                                             }
@@ -302,17 +404,56 @@
                 </div>
             </div> <!--Categorias-->
         </div>
-        
+
         <div class="row mt-3">
             <div class="col-sm-12">
                 <div class="callout callout-success">
                     <h5><i class="fa-regular fa-circle-check" style="color: #218838;"></i> Now, if you want to create a new Product...</h5>
-                 <div row col-4>
-                    <button type="button" class="btn btn-block btn-success" onclick="location.href='@Url.Action("NewProduct", "Patrimony")'"><i class="fa-solid fa-arrow-up-right-from-square"></i> Let's Go!</button>
-                 </div>
+                    <div row col-4>
+                        <button type="button" class="btn btn-block btn-success" onclick="location.href='@Url.Action("NewProduct", "Patrimony")'"><i class="fa-solid fa-arrow-up-right-from-square"></i> Let's Go!</button>
+                    </div>
                 </div>
             </div>
         </div>
+   
+        
+        <div class="modal fade" id="edit-modal" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 id="modal-title" class="modal-title"></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text label">Name</span>
+                                        </div>
+                                        <input id="modal-name" type="text" class="form-control product-data" value="">
+                                    </div>
+                                </div> <!--/name -->
+                                
+                            </div>
+                            <div class="row d-flex justify-content-end">
+                                <a id="delete" class="text-danger" href="#"><i class="fa-solid fa-triangle-exclamation fa-sm"></i>  Delete this</a>
+                            </div> <!--/name -->
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="update-product" type="button" class="btn btn-success"> <i class="fa-solid fa-check"></i> Update</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    
     </div>
 </div>
 

@@ -13,7 +13,8 @@ namespace Apresentacao.Models.Patrimony.Settings
             foreach (var marca in contagemMarcas)
             {
                 ContagemMarcas.Add(new MarcaModel
-                {
+                {   
+                    Id = marca.Key.Id,
                     Nome = marca.Key.Nome,
                     Percentual = totalProdutos != 0 ? marca.Value * 100 / totalProdutos : 0
                 });
@@ -21,7 +22,8 @@ namespace Apresentacao.Models.Patrimony.Settings
             foreach (var categoria in contagemCategorias)
             {
                 ContagemCategorias.Add(new CategoriaModel
-                {
+                {   
+                    Id=categoria.Key.Id,
                     Nome = categoria.Key.Nome,
                     Percentual = totalProdutos != 0 ? categoria.Value * 100 / totalProdutos : 0
                 });

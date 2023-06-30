@@ -18,6 +18,7 @@
 
     <!-- Toastr -->
     <link rel="stylesheet" href="~/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="~/plugins/sweetalert2/sweetalert2.min.css">
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -124,24 +125,38 @@
   <!-- /.control-sidebar -->
 
   <!-- Main Footer -->
-  <footer class="main-footer">Atos.netAcademy | Neil Angelo</footer>
+@Html.Partial("_Footer")
 </div>
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
-    <!-- jQuery -->
-    <script src="~/plugins/jquery/jquery.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="~/theme/js/adminlte.js"></script>
+
+<!-- jQuery -->
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<!-- AdminLTE App -->
+<script src="~/theme/js/adminlte.js"></script>
 
 <!-- Bootstrap -->
 <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- overlayScrollbars -->
 <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="~/plugins/toastr/toastr.min.js"></script>
+<script src="~/plugins/sweetalert2/sweetalert2.all.min.js"></script>
 
-   
+<script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+</script>
 
-    <script src="~/plugins/toastr/toastr.min.js"></script>
 @await RenderSectionAsync("Scripts", required: false)
 
 </body>

@@ -120,20 +120,48 @@ namespace Apresentacao.Controllers
         }
 
         // -_---_--_-____-_--_---_---[UPDATE]____--__--_-_--_-____--__-_--___--_
-        public IActionResult UpdateBrand()
+        public async Task<IActionResult> UpdateBrand([FromServices] Context context, [FromBody] MarcaModel marca, [FromRoute] int id)
         {
-            return View();
+
+            Marca? m = context.Marcas.Find(id);
+
+            if (m == null)
+                return NotFound();
+
+            m.Nome = marca.Nome;
+
+            try
+            {
+                context.Marcas.Update(m);
+                await context.SaveChangesAsync();
+                return Ok();
+
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
-        public IActionResult UpdateCategory()
+        public async Task<IActionResult> UpdateCategory([FromServices] Context context, [FromBody] CategoriaModel categoria, [FromRoute] int id)
         {
-            return View();
+
+            Categoria? m = context.Categorias.Find(id);
+
+            if (m == null)
+                return NotFound();
+            
+            m.Nome = categoria.Nome;
+
+            try
+            {
+                context.Categorias.Update(m);
+                await context.SaveChangesAsync();
+                return Ok();
+
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateProduct([FromServices] Context context, [FromBody] NewProduct product, [FromRoute] int id)
         {
-            RepositorioProduto repositorioProduto = new();
-
             Produto? p = context.Produtos.Find(id);
             
             if(p == null)
