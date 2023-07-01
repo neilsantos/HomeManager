@@ -29,8 +29,8 @@
         $(document).ready(function () {
             $("#patrimony").attr("class", "nav-item menu-open");
             $("#patrimony-link").attr("class", "nav-link active");
-            $("#general").attr("class", "nav-link active
-        })
+            $("#general").attr("class", "nav-link active");
+        });
     </script>
     <script>
         //keeping Modal updated
@@ -58,17 +58,17 @@
         })
         var url = null
         function EditProduct(id) {
-
             var table = $('#all-products').DataTable();
             var data = table.row('#' + id).data();
 
             $('#edit-product-modal').modal('toggle');
 
+            $('#modal-name').attr('data', id)
             $('#modal-name').val(data.name)
             $('#modal-model').val(data.model)
             $('#modal-price').val(data.price)
             $('#modal-serial-number').html(data.serialnumber)
-            
+
 
 
             $("#modal-brand-select > option").each(function () {
@@ -93,7 +93,7 @@
                     isSafetoProceed = false;
 
                     if (show) {
-                        toastr.error("Product can't be saved without these informations")
+                        Toast.fire({ icon: 'error', title: 'I cant save it like that' })
                         show = false;
                     }
                     if ($(this).attr('id') == "brand-select" || $(this).attr('id') == "category-select")
@@ -130,7 +130,6 @@
                     "BrandId": brandId,
                     "CategoryId": categoryId
                 }
-                console.log(JSON.stringify(payload))
                 $(this).html('<i class="fas fa-redo-alt fa-spin"></i>')
                 $.ajax({
                     data: JSON.stringify(payload),
@@ -139,23 +138,8 @@
                     contentType: 'application/json; charset=utf-8',
                     traditional: true,
                     success: function (res) {
-                        toastr.success('Saved to Database!')
+                        Toast.fire({ icon: 'success', title: 'All good, go on!' })
                         window.setTimeout(function () { window.location.href = './Patrimony'; }, 2000)
-                        console.log("resposta:", res)
-                        //switch () {
-                        //    case 'success':
-                        //        toastr.success('Saved to Database!')
-                        //        window.setTimeout(function () { window.location.href = './'; }, 2000)
-                        //        break
-                        //    case 'error':
-                        //        toastr.error('Error, preset could not be saved!')
-                        //        break
-                        //    case 'equal':
-                        //        toastr.warning('There is already a preset registered with that name!')
-                        //        break
-                        //    default:
-                        //        toastr.error('Unexpected error')
-                        //}
                     }
                 })
                 $(this).html('<i class="fa-solid fa-check"></i> Save')
@@ -184,7 +168,7 @@
         })
     </script>
 
-  
+
     <script>
         $(function () {
             $("#all-products").DataTable({
@@ -208,7 +192,7 @@
                         "className": "dt-center"
                     },
                     {
-                        targets: [5,6],
+                        targets: [5, 6],
                         visible: false
                     }
                 ]
@@ -220,22 +204,48 @@
 
     <script>
 
-        let state = true;
-        function changeIconView() {
-            let icon = document.getElementById('change-view-icon');
-            if (state) {
-                icon.removeAttribute("class")
-                icon.setAttribute("class", "fas fa-th")
-            } else {
-                icon.removeAttribute("class")
-                icon.setAttribute("class", "fas fa-bars")
-            }
-            state = !state;
-        }
-        function changeView() {
+        $("#delete").click(function () {
 
-        }
+            let id = $('#modal-name').attr('data');
+            let type = $('#modal-name').attr('data-content');
+            let name = $('#modal-name').val();
+            let model = $('#modal-model').val();
+
+            Swal.fire({
+                width: '50em',
+                title: "Are you sure?",
+                text: name+" - " + model + " Will be delete for good!",
+                //html: content,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'Patrimony/DeleteProduct/' + id,
+                        type: 'DELETE',
+                        contentType: 'application/json; charset=utf-8',
+                        traditional: true,
+                        success: function (res) {
+                            $('#edit-product-modal').modal('toggle');
+
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+
+                            window.setTimeout(function () { window.location.href = './Patrimony'; }, 3000)
+
+                        }
+                    })
+                }
+            })
+        })
     </script>
+
 }
 
 
@@ -522,6 +532,9 @@
                                 </div>
                             </div> <!--Category-->
                         </div>
+                        <div class="row d-flex justify-content-end">
+                            <a id="delete" class="text-danger" href="#"><i class="fa-solid fa-triangle-exclamation fa-sm"></i>  Delete this</a>
+                        </div> <!--/Delete This -->
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">

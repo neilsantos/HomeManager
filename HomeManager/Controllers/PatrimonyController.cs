@@ -69,8 +69,6 @@ namespace Apresentacao.Controllers
             return View();
         }
 
-
-
         // -_---_--_-____-_--_---_---[CREATE]____--__--_-_--_-____--__-_--___--_
         [HttpPost]
         public async Task<IActionResult> NewBrand([FromServices] Context context, [FromBody] Marca marca)

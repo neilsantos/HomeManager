@@ -92,23 +92,8 @@
                         contentType: 'application/json; charset=utf-8',
                         traditional: true,
                         success: function (res) {
-                            toastr.success('Saved to Database!')
+                            Toast.fire({ icon: 'success', title: 'All good, go on!' })
                             window.setTimeout(function () { window.location.href = './Settings'; }, 2000)
-                            console.log("resposta:", res)
-                            //switch () {
-                            //    case 'success':
-                            //        toastr.success('Saved to Database!')
-                            //        window.setTimeout(function () { window.location.href = './'; }, 2000)
-                            //        break
-                            //    case 'error':
-                            //        toastr.error('Error, preset could not be saved!')
-                            //        break
-                            //    case 'equal':
-                            //        toastr.warning('There is already a preset registered with that name!')
-                            //        break
-                            //    default:
-                            //        toastr.error('Unexpected error')
-                            //}
                         }
                     })
                     $(this).html('<i class="fa-solid fa-check"></i> Save')
