@@ -6,6 +6,7 @@ using Infraestrutura;
 using Infraestrutura.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Dominio.Interfaces;
 
 namespace Apresentacao.Controllers
 {
@@ -20,7 +21,7 @@ namespace Apresentacao.Controllers
             List<Products> products = new();
             foreach (var p in allProducts)
             {
-                products.Add(new(p.Id,p.Nome,p.Modelo, p.Marca.Nome, p.Categoria.Nome, p.Valor,p.NumeroDeSerie));
+                products.Add(new(p.Id, p.Nome, p.Modelo, p.Marca.Nome, p.Categoria.Nome, p.Valor, p.NumeroDeSerie));
             }
             return View(products);
         }
@@ -38,7 +39,7 @@ namespace Apresentacao.Controllers
             PatrimonySettings patrimonySettings = new(ContagemPorMarca, ContagemPorCategoria, ContagemProdutos);
 
             return View(patrimonySettings);
-        } 
+        }
         public IActionResult BrandsNCategories()
         {
             RepositorioCategoria categoryRepository = new();
@@ -68,8 +69,8 @@ namespace Apresentacao.Controllers
             return View();
         }
 
-        //C-UD
-        
+
+
         // -_---_--_-____-_--_---_---[CREATE]____--__--_-_--_-____--__-_--___--_
         [HttpPost]
         public async Task<IActionResult> NewBrand([FromServices] Context context, [FromBody] Marca marca)
@@ -83,7 +84,6 @@ namespace Apresentacao.Controllers
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
-
         [HttpPost]
         public async Task<IActionResult> NewCategory([FromServices] Context context, [FromBody] Categoria categoria)
         {
@@ -96,16 +96,15 @@ namespace Apresentacao.Controllers
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
-
         [HttpPost]
         public async Task<IActionResult> NewProduct([FromServices] Context context, [FromBody] NewProduct product)
-        {   
+        {
             var category = context.Categorias.Find(product.CategoryId);
             var brand = context.Marcas.Find(product.BrandId);
             var price = double.Parse(product.Price);
-            
+
             Produto produto = new(product.Name, product.Model, category, brand, price);
-            
+
             try
             {
                 await context.Produtos.AddAsync(produto);
@@ -120,6 +119,7 @@ namespace Apresentacao.Controllers
         }
 
         // -_---_--_-____-_--_---_---[UPDATE]____--__--_-_--_-____--__-_--___--_
+        [HttpPut]
         public async Task<IActionResult> UpdateBrand([FromServices] Context context, [FromBody] MarcaModel marca, [FromRoute] int id)
         {
 
@@ -139,6 +139,7 @@ namespace Apresentacao.Controllers
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
+        [HttpPut]
         public async Task<IActionResult> UpdateCategory([FromServices] Context context, [FromBody] CategoriaModel categoria, [FromRoute] int id)
         {
 
@@ -146,7 +147,7 @@ namespace Apresentacao.Controllers
 
             if (m == null)
                 return NotFound();
-            
+
             m.Nome = categoria.Nome;
 
             try
@@ -158,13 +159,12 @@ namespace Apresentacao.Controllers
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
-
         [HttpPut]
         public async Task<IActionResult> UpdateProduct([FromServices] Context context, [FromBody] NewProduct product, [FromRoute] int id)
         {
             Produto? p = context.Produtos.Find(id);
-            
-            if(p == null)
+
+            if (p == null)
                 return NotFound();
 
             var category = context.Categorias.Find(product.CategoryId);
@@ -188,17 +188,83 @@ namespace Apresentacao.Controllers
         }
 
         // -_---_--_-____-_--_---_---[DELETE]____--__--_-_--_-____--__-_--___--_
-        public IActionResult DeleteBrand()
+        [HttpDelete]
+        public IActionResult DeleteBrand([FromServices] Context context, [FromRoute] int id)
         {
-            return View();
+            Marca? m = context.Marcas.Find(id);
+
+            if (m == null)
+                return NotFound();
+
+            try
+            {
+                context.Marcas.Remove(m);
+                context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
-        public IActionResult DeleteCategory()
+        [HttpDelete]
+        public IActionResult DeleteCategory([FromServices] Context context, [FromRoute] int id)
         {
-            return View();
+            RepositorioProduto repositorioProduto = new();
+
+            Categoria? c = context.Categorias.Find(id);
+
+            if (c == null)
+                return NotFound();
+
+            try
+            {
+                context.Categorias.Remove(c);
+                context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
-        public IActionResult DeleteProduct()
+        [HttpGet]
+        public IActionResult ConsultBound(string type, int id)
         {
-            return View();
+            if (string.IsNullOrEmpty(type) || id == 0)
+            {
+                return BadRequest();
+            }
+
+            RepositorioProduto repositorioProduto = new();
+            List<Produto> products = new();
+
+            if (type == "category")
+            {
+                products = repositorioProduto.GetProductsByCategory(id);
+            }
+            if (type == "brand")
+            {
+                products = repositorioProduto.GetProductsByBrand(id);
+            }
+
+            List<Products> productsList = new();
+            foreach (var p in products)
+            {
+                productsList.Add(new(p.Id, p.Nome, p.Modelo, p.Marca.Nome, p.Categoria.Nome, p.Valor, p.NumeroDeSerie));
+            }
+            
+
+            return Ok(productsList);
+        }
+        public IActionResult DeleteProduct([FromServices] Context context, [FromRoute] int id)
+        {
+            Produto? p = context.Produtos.Find(id);
+
+            if (p == null)
+                return NotFound();
+
+            try
+            {
+                context.Produtos.Remove(p);
+                context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
     }

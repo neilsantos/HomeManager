@@ -15,11 +15,15 @@ public class RepositorioProduto : Repositorio<Produto>, IRepositorioProduto
     }
     public List<Produto> GetFullProducts()
     {
-      var produto =  _context.Produtos.Include(p => p.Categoria)
-                                      .Include(p => p.Marca)
-                                      .ToList();
-
-        return produto;
+      return _context.Produtos.Include(p => p.Categoria).Include(p => p.Marca).ToList();
+    }
+    public List<Produto> GetProductsByCategory(int categoryId)
+    {   
+        return _context.Produtos.Include(p => p.Categoria).Include(p => p.Marca).Where(p => p.Categoria.Id == categoryId).ToList();
+    }
+    public List<Produto> GetProductsByBrand(int brandId)
+    {
+        return _context.Produtos.Include(p => p.Categoria).Include(p => p.Marca).Where(p => p.Marca.Id == brandId).ToList();
     }
 
 }

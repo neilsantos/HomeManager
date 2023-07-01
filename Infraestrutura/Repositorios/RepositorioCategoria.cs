@@ -24,6 +24,7 @@ public class RepositorioCategoria : Repositorio<Categoria>, IRepositorioCategori
             .Take(5).ToDictionary(x => x.CategoryName, x => x.TotalPrice);
 
     }
+
 }
 
 
