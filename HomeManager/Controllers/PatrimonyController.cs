@@ -7,21 +7,25 @@ using Infraestrutura.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Dominio.Interfaces;
+using System.Globalization;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace Apresentacao.Controllers
 {
     public class PatrimonyController : Controller
     {
         // -_---_--_-____-_--_---_---[READ]____--__--_-_--_-____--__-_--___--_
-        public IActionResult Index([FromServices] Context context)
+        public IActionResult Index()
         {
             RepositorioProduto repositorioProduto = new();
             var allProducts = repositorioProduto.GetFullProducts();
 
             List<Products> products = new();
+
             foreach (var p in allProducts)
             {
-                products.Add(new(p.Id, p.Nome, p.Modelo, p.Marca.Nome, p.Categoria.Nome, p.Valor, p.NumeroDeSerie));
+                var price = p.Valor.ToString("C", CultureInfo.CreateSpecificCulture("pt-BR"));
+                products.Add(new(p.Id, p.Nome, p.Modelo, p.Marca.Nome, p.Categoria.Nome, price, p.NumeroDeSerie));
             }
             return View(products);
         }
@@ -243,7 +247,8 @@ namespace Apresentacao.Controllers
             List<Products> productsList = new();
             foreach (var p in products)
             {
-                productsList.Add(new(p.Id, p.Nome, p.Modelo, p.Marca.Nome, p.Categoria.Nome, p.Valor, p.NumeroDeSerie));
+                var price = p.Valor.ToString("C", CultureInfo.CreateSpecificCulture("pt-BR"));
+                productsList.Add(new(p.Id, p.Nome, p.Modelo, p.Marca.Nome, p.Categoria.Nome, price, p.NumeroDeSerie));
             }
             
 

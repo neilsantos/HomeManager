@@ -78,7 +78,7 @@ namespace HomeManager.Controllers
             List<TopFive> topfive = new();
             foreach (var item in topFive)
             {
-                topfive.Add(new(item.Key.Nome, Math.Round(item.Value, 2), Math.Round(total)));
+                topfive.Add(new(item.Key.Nome, item.Value, total));
             }
 
             return Ok(topfive);
