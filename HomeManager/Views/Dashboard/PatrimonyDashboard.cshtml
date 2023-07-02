@@ -50,7 +50,7 @@
 
             },
             error: function (request, status, error) {
-                toastr.error('Error on loading count per category graphic')
+                Toast.fire({ icon: 'error', title: 'Error requesting top5 category itens' })
             }
         })
     </script>
@@ -92,7 +92,7 @@
                 })
             },
             error: function (request, status, error) {
-                toastr.error('Error on loading count per category graphic')
+                Toast.fire({ icon: 'error', title: 'Error on loading count per category graphic' })
             }
         })
     </script> <!--COUNT PER CATEGORY-->
@@ -109,7 +109,7 @@
 
                 let total = 0;
                 $.each(response.data, function () { total += parseFloat(this) || 0; });
-                $('#total-category-price').html('Total R$ ' + new Intl.NumberFormat('en-DE').format(total))
+                $('#total-category-price').html('Total ' + new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total))
                 $('#name-category-price').html('Price per Category')
 
                 var ticksStyle = {
@@ -138,7 +138,13 @@
                         maintainAspectRatio: false,
                         tooltips: {
                             mode: mode,
-                            intersect: intersect
+                            intersect: intersect,
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                                    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+                                }
+                            }
                         },
                         hover: {
                             mode: mode,
@@ -175,7 +181,8 @@
                                 gridLines: {
                                     display: true
                                 },
-                                ticks: ticksStyle
+                                ticks: ticksStyle,
+
                             }]
                         }
                     }
@@ -183,7 +190,7 @@
                 $('#price-category-animation').attr('style', 'display:none');
             },
             error: function (request, status, error) {
-                toastr.error('Error on loading price per category graphic')
+                Toast.fire({ icon: 'error', title: 'Error on loading price per category graphic' })
             }
 
         })
@@ -205,7 +212,7 @@
                 }
             },
             error: function (request, status, error) {
-                toastr.error('Error on loading')
+                Toast.fire({ icon: 'error', title: 'Error requesting top5 brands itens' })
             }
         })
     </script>
@@ -242,7 +249,7 @@
 
             },
             error: function (request, status, error) {
-                toastr.error('Error on loading count per category graphic')
+                Toast.fire({ icon: 'error', title: 'Error on loading count per category graphic' })
             }
         })
     </script>
@@ -257,7 +264,7 @@
 
                 let total = 0;
                 $.each(response.data, function () { total += parseFloat(this) || 0; });
-                $('#total-brand-price').html('Total R$ ' + new Intl.NumberFormat('en-DE').format(total))
+                $('#total-brand-price').html('Total ' + new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total))
 
                 var ticksStyle = {
                     fontColor: '#495057',
@@ -285,7 +292,13 @@
                         maintainAspectRatio: false,
                         tooltips: {
                             mode: mode,
-                            intersect: intersect
+                            intersect: intersect,
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                                    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+                                }
+                            }
                         },
                         hover: {
                             mode: mode,
@@ -330,7 +343,7 @@
                 })
             },//sucess
             error: function (request, status, error) {
-                toastr.error('Error on loading price per category graphic')
+                Toast.fire({ icon: 'error', title: 'Error on loading price per category graphic' })
             }//error
         })
     </script>

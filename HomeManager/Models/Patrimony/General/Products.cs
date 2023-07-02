@@ -8,10 +8,10 @@ public class Products
     public string Model { get; set; }
     public string Brand { get; set; }
     public string Category { get; set; }
-    public double Price { get; set; }
+    public string Price { get; set; }
     public string SerialNumber { get; set; }
 
-    public Products(int id, string name, string model, string brand, string category, double price, string serialNumber)
+    public Products(int id, string name, string model, string brand, string category, string price, string serialNumber)
     {
         Id = id;
         Name = name;
