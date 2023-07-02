@@ -13,7 +13,7 @@ namespace Apresentacao.Models.Dashboards.PatrimonyDashboard
         {
             Name = name;
             var calc = total != 0 ? Math.Round((price * 100 / total),2) : 0;
-            Percent = calc.ToString("C", CultureInfo.CreateSpecificCulture("pt-BR"));
+            Percent = calc.ToString("C", CultureInfo.CreateSpecificCulture("pt-BR")).Replace("R$ ","");
             Price = price.ToString("C", CultureInfo.CreateSpecificCulture("pt-BR"));
         }
     }
