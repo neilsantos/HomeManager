@@ -103,7 +103,42 @@
             })
         })
     </script>
-   
+   <script>
+       $('#save-multiple').click(function(){
+            Swal.fire({
+                title: 'How many?',
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+                showLoaderOnConfirm: true,
+                preConfirm: (login) => {
+                    return fetch(`//api.github.com/users/${login}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText)
+                            }
+                            return response.json()
+                        })
+                        .catch(error => {
+                            Swal.showValidationMessage(
+                                `Request failed: ${error}`
+                            )
+                        })
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: `${result.value.login}'s avatar`,
+                        imageUrl: result.value.avatar_url
+                    })
+                }
+            })
+       })
+   </script>
 }
 
 <div class="row justify-content-center mt-5 pt-5">
@@ -186,7 +221,21 @@
                 <div class="row float-right">
 
                     <button type="button" class="btn btn-danger mr-2" onclick="history.back()"><i class="fa-solid fa-xmark"></i></button>
-                <button id="new-product" type="button" class="btn btn-success"><i class="fa-solid fa-check"></i> Save</button>
+                @*<button id="new-product" type="button" class="btn btn-success"><i class="fa-solid fa-check"></i> Save</button>*@
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-success dropdown-hover" data-toggle="dropdown" aria-expanded="false">
+                            @*<span class="sr-only">Toggle Dropdown</span>*@
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+                        <div class="dropdown-menu" role="menu" style="">
+                            <a class="dropdown-item" id="save-multiple" href="#"><i class="fa-solid fa-list-check"></i> Save Multiples</a>
+                            @*<a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Separated link</a>*@
+                        </div>
+                    </div>
                 </div>
             </div>
             
