@@ -12,8 +12,17 @@ namespace HomeManager.Controllers
             return View();
         }
         public IActionResult PatrimonyDashboard()
-        {
-            return View();
+        {   
+            RepositorioProduto repositorioProduto = new();
+            var top5 = repositorioProduto.TopFiveProducts();
+            
+            List<ProductDashModel> products = new ();
+            
+            foreach (var p in top5)
+            {
+                products.Add(new(p.Nome, p.Modelo, p.Valor, p.NumeroDeSerie, p.Marca, p.Categoria));
+            }
+            return View(products);
         }
         public IActionResult FinancialDashboard()
         {

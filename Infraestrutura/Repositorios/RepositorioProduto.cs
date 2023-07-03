@@ -25,6 +25,10 @@ public class RepositorioProduto : Repositorio<Produto>, IRepositorioProduto
     {
         return _context.Produtos.Include(p => p.Categoria).Include(p => p.Marca).Where(p => p.Marca.Id == brandId).ToList();
     }
+    public List<Produto> TopFiveProducts()
+    {
+        return _context.Produtos.OrderByDescending(x => x.Valor).Include(p => p.Categoria).Include(p => p.Marca).Take(5).ToList();
 
+    }
 }
 

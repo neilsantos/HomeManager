@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Apresentacao.Models.Dashboards.PatrimonyDashboard
+@model List<ProductDashModel>
+@{
     ViewData["Title"] = "Patrimony";
     ViewData["PageHeader"] = "Patrimony Dashboard";
 }
@@ -602,7 +604,7 @@
                 <!--Item 1 - ITENS -->
                 <div class="card">
                     <div class="card-header border-0">
-                        <h3 class="card-title">Top 5 ítens</h3>
+                        <h3 class="card-title"><i class="fa-solid fa-clipboard-list"></i> Top 5 by price</h3>
                         <!--<div class="card-tools">
                             <a href="#" class="btn btn-tool btn-sm">
                                 <i class="fas fa-download"></i>
@@ -616,51 +618,32 @@
                         <table class="table table-striped table-valign-middle">
                             <thead>
                                 <tr>
-                                    <th>Product</th>
-                                    <th>Category</th>
+                                    <th>Name</th>
+                                    <th>Model</th>
                                     <th>Price</th>
-                                    <th>More</th>
+                                    <th>Category</th>
+                                    <th>Brand</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Monitor 27' Curvo</td>
-                                    <td>Eletrônico</td>
-                                    <td>900,00</td>
-                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
-                                </tr>
+                                @{
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.Name</td>
+                                            <td>@item.Model</td>
+                                            <td>@item.Price</td>
+                                            <td>@item.Category.Nome</td>
+                                            <td>@item.Brand.Nome</td>
+                                        </tr>
+                                    }
+                                }
 
-                                <tr>
-                                    <td>Monitor 27' Curvo</td>
-                                    <td>Eletrônico</td>
-                                    <td>900,00</td>
-                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
-                                </tr>
-
-                                <tr>
-                                    <td>Monitor 27' Curvo</td>
-                                    <td>Eletrônico</td>
-                                    <td>900,00</td>
-                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
-                                </tr>
-
-                                <tr>
-                                    <td>Alexa Echo Dot 3</td>
-                                    <td>Eletrônico</td>
-                                    <td>210,00</td>
-                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>TV 65' Smart</td>
-                                    <td>Eletrônico</td>
-                                    <td>210,00</td>
-                                    <td><a href="#" class="text-muted"><i class="fas fa-search"></i></a></td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-default bg-gradient-success float-right" onclick="location.href='/Patrimony/Index'">Ver Lista Completa</button>
+                        <button class="btn btn-default bg-gradient-success float-right" onclick="location.href='/Patrimony/Index'">View All Products</button>
 
                     </div>
                 </div>
@@ -673,7 +656,7 @@
                 <!--Item 1-->
                 <div class="card">
                     <div class="card-header border-0">
-                        <h3 class="card-title">Lista de Compras</h3>
+                        <h3 class="card-title"><i class="fa-solid fa-heart-circle-plus"></i> WishList</h3>
                         <!--<div class="card-tools">
                            <a href="#" class="btn btn-tool btn-sm">
                                <i class="fas fa-download"></i>
@@ -725,7 +708,7 @@
                         </table>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-default bg-gradient-success float-right">Cadastrar um Novo</button>
+                        <button type="submit" class="btn btn-default bg-gradient-success float-right">New Item</button>
                     </div>
                 </div>
                 <!-- /.Item 1 -->
