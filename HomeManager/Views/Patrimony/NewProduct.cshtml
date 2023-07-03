@@ -115,6 +115,7 @@
                 confirmButtonText: 'Save',
                 showLoaderOnConfirm: true,
                 preConfirm: (login) => {
+
                     return fetch(`//api.github.com/users/${login}`)
                         .then(response => {
                             if (!response.ok) {
