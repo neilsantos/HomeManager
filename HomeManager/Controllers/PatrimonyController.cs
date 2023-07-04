@@ -201,7 +201,7 @@ namespace Apresentacao.Controllers
             try
             {
                 context.Marcas.Remove(m);
-                context.SaveChangesAsync();
+                context.SaveChanges();
                 return Ok();
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
@@ -219,7 +219,7 @@ namespace Apresentacao.Controllers
             try
             {
                 context.Categorias.Remove(c);
-                context.SaveChangesAsync();
+                context.SaveChanges();
                 return Ok();
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
@@ -264,7 +264,7 @@ namespace Apresentacao.Controllers
             try
             {
                 context.Produtos.Remove(p);
-                context.SaveChangesAsync();
+                context.SaveChanges();
                 return Ok();
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
