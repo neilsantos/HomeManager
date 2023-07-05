@@ -17,10 +17,6 @@ namespace HomeManager.Controllers
         {
             return View("~/Views/login/login.cshtml");
         }
-        //public IActionResult Login()
-        //{
-        //    return View("~/Views/login/login.cshtml");
-        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

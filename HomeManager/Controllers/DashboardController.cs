@@ -30,9 +30,8 @@ namespace HomeManager.Controllers
             return View("~/views/shared/UnderConstruction.cshtml");
         }
 
+        #region -_---_--_-____-_--_---_---[CHARTS]____--__--_-_--_-____--__-_--___--_
 
-        //-_---_--_-____-_--_---_---[CHARTS]____--__--_-_--_-____--__-_--___--_
-        
         // # CATEGORY
         public IActionResult CountPerCategory()
         {
@@ -152,6 +151,7 @@ namespace HomeManager.Controllers
 
             return Ok(topfive);
         }
-        
+
+        #endregion
     }
 }

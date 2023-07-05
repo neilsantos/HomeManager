@@ -14,7 +14,7 @@ namespace Apresentacao.Controllers
 {
     public class PatrimonyController : Controller
     {
-        // -_---_--_-____-_--_---_---[READ]____--__--_-_--_-____--__-_--___--_
+        #region -_---_--_-____-_--_---_---[READ]____--__--_-_--_-____--__-_--___--_
         public IActionResult Index()
         {
             RepositorioProduto repositorioProduto = new();
@@ -29,7 +29,6 @@ namespace Apresentacao.Controllers
             }
             return View(products);
         }
-
         public IActionResult Settings()
         {
             RepositorioMarca repositorioMarca = new();
@@ -55,7 +54,6 @@ namespace Apresentacao.Controllers
             BrandsAndCategories product = new(brands, categories);
             return Ok(product);
         }
-
         public IActionResult NewProduct()
         {
             RepositorioCategoria categoryRepository = new();
@@ -67,13 +65,13 @@ namespace Apresentacao.Controllers
             BrandsAndCategories product = new(brands, categories);
             return View(product);
         }
-
         public IActionResult ViewProduct()
         {
             return View();
         }
+        #endregion
 
-        // -_---_--_-____-_--_---_---[CREATE]____--__--_-_--_-____--__-_--___--_
+        #region -_---_--_-____-_--_---_---[CREATE]____--__--_-_--_-____--__-_--___--_
         [HttpPost]
         public async Task<IActionResult> NewBrand([FromServices] Context context, [FromBody] Marca marca)
         {
@@ -119,8 +117,9 @@ namespace Apresentacao.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
 
-        // -_---_--_-____-_--_---_---[UPDATE]____--__--_-_--_-____--__-_--___--_
+        #region -_---_--_-____-_--_---_---[UPDATE]____--__--_-_--_-____--__-_--___--_
         [HttpPut]
         public async Task<IActionResult> UpdateBrand([FromServices] Context context, [FromBody] MarcaModel marca, [FromRoute] int id)
         {
@@ -188,8 +187,9 @@ namespace Apresentacao.Controllers
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
+        #endregion
 
-        // -_---_--_-____-_--_---_---[DELETE]____--__--_-_--_-____--__-_--___--_
+        #region -_---_--_-____-_--_---_---[DELETE]____--__--_-_--_-____--__-_--___--_
         [HttpDelete]
         public IActionResult DeleteBrand([FromServices] Context context, [FromRoute] int id)
         {
@@ -209,8 +209,6 @@ namespace Apresentacao.Controllers
         [HttpDelete]
         public IActionResult DeleteCategory([FromServices] Context context, [FromRoute] int id)
         {
-            RepositorioProduto repositorioProduto = new();
-
             Categoria? c = context.Categorias.Find(id);
 
             if (c == null)
@@ -219,6 +217,22 @@ namespace Apresentacao.Controllers
             try
             {
                 context.Categorias.Remove(c);
+                context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+        [HttpDelete]
+        public IActionResult DeleteProduct([FromServices] Context context, [FromRoute] int id)
+        {
+            Produto? p = context.Produtos.Find(id);
+
+            if (p == null)
+                return NotFound();
+
+            try
+            {
+                context.Produtos.Remove(p);
                 context.SaveChanges();
                 return Ok();
             }
@@ -254,21 +268,7 @@ namespace Apresentacao.Controllers
 
             return Ok(productsList);
         }
-        public IActionResult DeleteProduct([FromServices] Context context, [FromRoute] int id)
-        {
-            Produto? p = context.Produtos.Find(id);
-
-            if (p == null)
-                return NotFound();
-
-            try
-            {
-                context.Produtos.Remove(p);
-                context.SaveChanges();
-                return Ok();
-            }
-            catch (Exception ex) { return BadRequest(ex.Message); }
-        }
+        #endregion
 
     }
 }

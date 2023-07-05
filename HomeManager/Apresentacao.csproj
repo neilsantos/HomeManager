@@ -17,4 +17,10 @@
     <ProjectReference Include="..\Infraestrutura\Infraestrutura.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Dashboards\FinancialDashboard\" />
+    <Folder Include="Models\Dashboards\GeneralDashboard\" />
+    <Folder Include="Models\Settings\" />
+  </ItemGroup>
+
 </Project>
